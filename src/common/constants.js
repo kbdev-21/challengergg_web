@@ -1,3 +1,11 @@
+export const regionCodeMap = {
+  "VN": "VN2",
+  "KR": "KR",
+  "NA": "NA1",
+  "EUW": "EUW1",
+  "EUN": "EUN1"
+}
+
 export const positionTextFormatMap = {
   TOP: "Top",
   JGL: "Jungle",

@@ -13,3 +13,9 @@ export async function fetchMatchesByPuuid(puuid, start, count, region) {
   const response = await axios.get(url);
   return response.data;
 }
+
+export async function search(searchKey) {
+  const url = `${baseUrl}/api/v1/search?key=${searchKey}`;
+  const response = await axios.get(url);
+  return response.data;
+}
