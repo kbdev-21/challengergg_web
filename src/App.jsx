@@ -1,5 +1,5 @@
 import {Routes, Route, Link, BrowserRouter} from "react-router-dom";
-import PageLayout from "./components/PageLayout.jsx";
+import PageLayout from "./components/layout/PageLayout.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import ChampionsPage from "./pages/ChampionsPage.jsx";

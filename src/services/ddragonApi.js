@@ -18,19 +18,19 @@ export function getSpellImageUrl(spellId, currentPatch) {
   if(spellId in spellIdMap) {
     return `https://ddragon.leagueoflegends.com/cdn/${currentPatch}/img/spell/${spellIdMap[spellId]}.png`;
   }
-  else return "empty"
+  else return "https://www.freeiconspng.com/thumbs/question-mark-icon/black-question-mark-icon-clip-art-10.png"
 }
 
 export function getRuneImageUrl(runeId) {
   if (runeId in runeIdMap) {
     return runeIdMap[runeId];
-  } else return "empty";
+  } else return "https://www.freeiconspng.com/thumbs/question-mark-icon/black-question-mark-icon-clip-art-10.png";
 }
 
 export function getRuneStyleImageUrl(styleId) {
   if (styleId in runeStyleIdMap) {
     return runeStyleIdMap[styleId].icon;
-  } else return "empty";
+  } else return "https://www.freeiconspng.com/thumbs/question-mark-icon/black-question-mark-icon-clip-art-10.png";
 }
 
 export async function fetchRuneReforged() {

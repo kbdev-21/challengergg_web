@@ -16,6 +16,8 @@ import {
   upperCaseFirstLowerCaseAll
 } from "../common/stringUtils.js";
 import KbScoreDisplay from "../components/KbScoreDisplay.jsx";
+import PositionIcon from "./PositionIcon.jsx";
+import LinkToProfile from "./LinkToProfile.jsx";
 
 export default function MatchCard({matchDto, puuid}) {
   const {currentPatch} = useGlobal();
@@ -38,9 +40,9 @@ export default function MatchCard({matchDto, puuid}) {
         }}
       >
         {/* Match overall info */}
-        <div className={"flex flex-col justify-between w-[70px] xs:w-20"}>
+        <div className={"flex flex-col justify-between w-[84px]"}>
           <div className={"flex flex-col"}>
-            <div className={`text-xs xs:text-sm font-[500] ${win ? "text-win" : "text-lose"}`}>
+            <div className={`font-[500] ${win ? "text-win" : "text-lose"}`}>
               {queueEnumToShortTextMap[matchDto.queue]}
             </div>
             <div className={`text-xs text-text2`}>
@@ -60,12 +62,20 @@ export default function MatchCard({matchDto, puuid}) {
         {/* Player info */}
         <div className={"flex flex-col gap-2"}>
           {/* Champ, spell, rune display */}
-          <div className={"flex gap-1"}>
-            <img
-              alt={"champ-avt"}
-              src={getChampionAvatarUrl(selfPerformance.championName, currentPatch)}
-              className={`w-[54px] h-[54px] rounded-md outline-2 -outline-offset-3 ${win ? "outline-win" : "outline-lose"}`}
-            />
+          <div className={"flex gap-[2px]"}>
+            <div className={"relative"}>
+              <img
+                alt={"champ-avt"}
+                src={getChampionAvatarUrl(selfPerformance.championName, currentPatch)}
+                className={`w-[54px] h-[54px] rounded-md outline-2 -outline-offset-3 ${win ? "outline-win" : "outline-lose"}`}
+              />
+              {selfPerformance.position !== "UNK" && (
+                <div className={"absolute -bottom-[1px] -right-[1px] bg-bg4 p-[2px] rounded-sm"}>
+                  <PositionIcon position={selfPerformance.position}/>
+                </div>
+              )}
+            </div>
+
             <div className={"flex flex-col gap-[2px]"}>
               <img
                 alt={"spell1"}
@@ -95,7 +105,7 @@ export default function MatchCard({matchDto, puuid}) {
                 />
               </div>
             </div>
-            <div className={'flex flex-col justify-center items-center w-16'}>
+            <div className={'flex flex-col justify-center items-center w-20 '}>
               <div
                 className={"font-[500]"}>{selfPerformance.kills} / {selfPerformance.deaths} / {selfPerformance.assists}</div>
               <div className={"font-[500] text-xs text-text2"}>{kdaFormat(selfPerformance.kda)} KDA</div>
@@ -134,7 +144,7 @@ export default function MatchCard({matchDto, puuid}) {
         </div>
 
         {/* Players display */}
-        <div className={"gap-1 hidden sm:flex"}>
+        <div className={"hidden sm:flex"}>
           <FivePlayerDisplay startIndex={0}></FivePlayerDisplay>
           <FivePlayerDisplay startIndex={5}></FivePlayerDisplay>
         </div>
@@ -155,7 +165,6 @@ export default function MatchCard({matchDto, puuid}) {
   );
 
 
-
   function FivePlayerDisplay({startIndex}) {
     return (
       <div className={"flex flex-col w-24"}>
@@ -166,9 +175,12 @@ export default function MatchCard({matchDto, puuid}) {
               className={"w-[18px] h-[18px] rounded-[100%]"}
               src={getChampionAvatarUrl(performance.championName, currentPatch)}
             />
-            <div className={"text-xs text-text2 truncate"}>
-              {performance.gameName}
-            </div>
+            <LinkToProfile gameName={performance.gameName} tagLine={performance.tagLine} region={matchDto.region}>
+              <div className={`text-xs w-16 truncate ${performance.puuid === puuid ? "text-text1" : "text-text2"} hover:text-text1 hover:underline`}>
+                {performance.gameName}
+              </div>
+            </LinkToProfile>
+
           </div>
 
         ))}
@@ -241,7 +253,9 @@ function MatchDetail({matchDto}) {
                     />
                   </div>
                 </div>
-                <div className={"w-[80px] truncate text-xs ml-1"}>{performance.gameName}</div>
+                <LinkToProfile gameName={performance.gameName} tagLine={performance.tagLine} region={matchDto.region}>
+                  <div className={"w-20 truncate text-xs ml-1 hover:underline"}>{performance.gameName}</div>
+                </LinkToProfile>
               </div>
             </td>
 
@@ -263,7 +277,9 @@ function MatchDetail({matchDto}) {
               <div className={'flex flex-col justify-center items-center w-16'}>
                 <div
                   className={"font-[500] text-xs"}>{performance.kills} / {performance.deaths} / {performance.assists}</div>
-                <div className={"text-xs text-text2"}>{kdaFormat(performance.kda)} ({(performance.killParticipation * 100).toFixed(0)}%)</div>
+                <div
+                  className={"text-xs text-text2"}>{kdaFormat(performance.kda)} ({(performance.killParticipation * 100).toFixed(0)}%)
+                </div>
               </div>
             </td>
 
@@ -287,7 +303,8 @@ function MatchDetail({matchDto}) {
             <td className={"p-2"}>
               <div className={"flex flex-col gap-[2px]"}>
                 <div className="text-xs font-[500]">{performance.pinkWardsPlaced}</div>
-                <div className="text-xs font-[500] text-text2">{performance.wardsPlaced} / {performance.wardsKilled}</div>
+                <div
+                  className="text-xs font-[500] text-text2">{performance.wardsPlaced} / {performance.wardsKilled}</div>
               </div>
             </td>
 
@@ -319,7 +336,7 @@ function MatchDetail({matchDto}) {
   )
 }
 
-function DamageChart({ damage, highestDamage }) {
+function DamageChart({damage, highestDamage}) {
   // prevent division by 0
   const percent = highestDamage > 0
     ? Math.round((damage / highestDamage) * 100)
@@ -329,11 +346,11 @@ function DamageChart({ damage, highestDamage }) {
     <div className="w-16 h-1 flex">
       <div
         className="h-1 bg-lose"
-        style={{ width: `${percent}%` }}
+        style={{width: `${percent}%`}}
       />
       <div
         className="h-1 bg-bg4"
-        style={{ width: `${100 - percent}%` }}
+        style={{width: `${100 - percent}%`}}
       />
     </div>
   );
