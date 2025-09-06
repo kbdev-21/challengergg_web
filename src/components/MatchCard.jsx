@@ -10,7 +10,6 @@ import {Bookmark, ChevronDown, Star} from "lucide-react";
 import {useState} from "react";
 import {queueEnumToShortTextMap, queueEnumToTextMap, rankImgMap} from "../common/constants.js";
 import {
-  formatNumber,
   formatSecondsToMinutesAndSeconds,
   getTimeSinceGameStart, kdaFormat, placementToDisplayString,
   upperCaseFirstLowerCaseAll

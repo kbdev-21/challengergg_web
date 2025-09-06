@@ -27,12 +27,12 @@ export function kdaFormat(kda) {
   return kda.toFixed(2); // Ensures two decimal places
 }
 
-export function getColorForChampionTier(tier) {
-  if(tier === 'S') return "rate.1";
-  if(tier === 'A') return "rate.2";
-  if(tier === 'B') return "rate.3";
-  if(tier === 'C') return "rate.4";
-  if(tier === 'D') return "rate.5";
+export function getTextColorForChampionTier(tier) {
+  if(tier === 'S') return "text-rate1";
+  if(tier === 'A') return "text-rate2";
+  if(tier === 'B') return "text-rate3";
+  if(tier === 'C') return "text-rate4";
+  if(tier === 'D') return "text-rate5";
 
 }
 

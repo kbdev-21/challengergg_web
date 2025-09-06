@@ -13,7 +13,6 @@ import {Bookmark, ChevronDown, Star} from "lucide-react";
 import {useState} from "react";
 import {queueEnumToShortTextMap, queueEnumToTextMap, rankImgMap} from "../common/constants.js";
 import {
-  formatNumber,
   formatSecondsToMinutesAndSeconds,
   getTimeSinceGameStart, kdaFormat,
   upperCaseFirstLowerCaseAll
@@ -43,10 +42,8 @@ export default function ProfilePage() {
   });
 
   if (isLoading) return <LoadingSpinner/>;
+  if (isError) return <div>Error</div>;
 
-  if (isError) {
-    return <div>Error</div>
-  }
 
   return (
     <div className={"pt-10"}>
@@ -125,8 +122,8 @@ function OverviewSection({ playerData }) {
     },
   });
 
-  if (isLoading) return <LoadingSpinner/>;
-  if (isError) return <div>Error</div>;
+  if(isLoading) return <LoadingSpinner/>;
+  if(isError) return <div>Error</div>;
 
   const matchDtos = matchPages.pages.flat();
 

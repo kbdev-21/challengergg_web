@@ -19,3 +19,9 @@ export async function search(searchKey) {
   const response = await axios.get(url);
   return response.data;
 }
+
+export async function fetchAllChampionStats() {
+  const url = `${baseUrl}/api/v1/analytics/champstats`;
+  const response = await axios.get(url);
+  return response.data;
+}
