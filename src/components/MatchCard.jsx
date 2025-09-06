@@ -17,7 +17,8 @@ import {
 } from "../common/stringUtils.js";
 import KbScoreDisplay from "../components/KbScoreDisplay.jsx";
 import PositionIcon from "./PositionIcon.jsx";
-import LinkToProfile from "./LinkToProfile.jsx";
+import LinkToProfile from "./link/LinkToProfile.jsx";
+import LinkToChampion from "./link/LinkToChampion.jsx";
 
 export default function MatchCard({matchDto, puuid}) {
   const {currentPatch} = useGlobal();
@@ -64,11 +65,14 @@ export default function MatchCard({matchDto, puuid}) {
           {/* Champ, spell, rune display */}
           <div className={"flex gap-[2px]"}>
             <div className={"relative"}>
-              <img
-                alt={"champ-avt"}
-                src={getChampionAvatarUrl(selfPerformance.championName, currentPatch)}
-                className={`w-[54px] h-[54px] rounded-md outline-2 -outline-offset-3 ${win ? "outline-win" : "outline-lose"}`}
-              />
+              <LinkToChampion championName={selfPerformance.championName}>
+                <img
+                  alt={"champ-avt"}
+                  src={getChampionAvatarUrl(selfPerformance.championName, currentPatch)}
+                  className={`w-[54px] h-[54px] rounded-md outline-2 -outline-offset-3 ${win ? "outline-win" : "outline-lose"}`}
+                />
+              </LinkToChampion>
+
               {selfPerformance.position !== "UNK" && (
                 <div className={"absolute -bottom-[1px] -right-[1px] bg-bg4 p-[2px] rounded-sm"}>
                   <PositionIcon position={selfPerformance.position}/>
@@ -170,13 +174,16 @@ export default function MatchCard({matchDto, puuid}) {
       <div className={"flex flex-col w-24"}>
         {matchDto.performances.slice(startIndex, startIndex + 5).map((performance, index) => (
           <div key={index} className={"flex items-center gap-1"}>
-            <img
-              alt={"champ-avt"}
-              className={"w-[18px] h-[18px] rounded-[100%]"}
-              src={getChampionAvatarUrl(performance.championName, currentPatch)}
-            />
+            <LinkToChampion championName={performance.championName}>
+              <img
+                alt={"champ-avt"}
+                className={"w-[18px] h-[18px] rounded-[100%]"}
+                src={getChampionAvatarUrl(performance.championName, currentPatch)}
+              />
+            </LinkToChampion>
             <LinkToProfile gameName={performance.gameName} tagLine={performance.tagLine} region={matchDto.region}>
-              <div className={`text-xs w-16 truncate ${performance.puuid === puuid ? "text-text1" : "text-text2"} hover:text-text1 hover:underline`}>
+              <div
+                className={`text-xs w-16 truncate ${performance.puuid === puuid ? "text-text1" : "text-text2"} hover:text-text1 hover:underline`}>
                 {performance.gameName}
               </div>
             </LinkToProfile>
@@ -219,11 +226,13 @@ function MatchDetail({matchDto}) {
             <td className={"text-start p-2"}>
               <div className={"flex gap-[2px] items-center"}>
                 <div>
-                  <img
-                    alt={"champ-avt"}
-                    src={getChampionAvatarUrl(performance.championName, currentPatch)}
-                    className={`w-[38px] h-[38px] rounded-[100%] outline-2 -outline-offset-2 ${performance.win ? "outline-win" : "outline-lose"}`}
-                  />
+                  <LinkToChampion championName={performance.championName}>
+                    <img
+                      alt={"champ-avt"}
+                      src={getChampionAvatarUrl(performance.championName, currentPatch)}
+                      className={`w-[38px] h-[38px] rounded-[100%] outline-2 -outline-offset-2 ${performance.win ? "outline-win" : "outline-lose"}`}
+                    />
+                  </LinkToChampion>
                 </div>
                 <div className={"flex flex-col gap-[2px]"}>
                   <img
