@@ -7,6 +7,7 @@ import {Asterisk, Cannabis, LoaderPinwheel} from "lucide-react";
 import {getChampionAvatarUrl} from "../services/ddragonApi.js";
 import {useGlobal} from "../contexts/GlobalContext.jsx";
 import {getTextColorForChampionTier} from "../common/stringUtils.js";
+import LinkToChampion from "../components/link/LinkToChampion.jsx";
 
 export default function ChampionsPage() {
   const [positionFilter, setPositionFilter] = useState("TOP");
@@ -69,27 +70,80 @@ export default function ChampionsPage() {
 function ChampsTable({champs}) {
   const {currentPatch} = useGlobal();
 
+  const [sortKey, setSortKey] = useState("power");
+  const [sortDirection, setSortDirection] = useState("DESC");
+
+  function changeSortMethod(newSortKey) {
+    if(sortKey === newSortKey) {
+      setSortDirection(sortDirection === "DESC" ? "ASC" : "DESC");
+    }
+    else {
+      setSortKey(newSortKey);
+      setSortDirection("DESC");
+    }
+  }
+
+  champs.sort((a, b) => sortDirection === "DESC" ? b[sortKey] - a[sortKey] : a[sortKey] - b[sortKey]);
+
   return (
     <div className={"w-full max-w-screen-lg overflow-x-auto bg-bg2 rounded-md"}>
-      {/*{champs.map((champ, index) => {*/}
-      {/*  return (*/}
-      {/*    <div>{champ.code}</div>*/}
-      {/*  )*/}
-      {/*})}*/}
       <table className="table-auto w-[1024px]">
         <thead>
         <tr>
-          <th className={"p-3 bg-bg3 font-[700] text-xs text-text1"}>Rank</th>
-          <th className={"p-3 bg-bg3 font-[500] text-xs text-text2"}>Role</th>
-          <th className={"p-3 bg-bg3 font-[500] text-xs text-text2"}>Champion</th>
-          <th className={"p-3 bg-bg3 font-[500] text-xs text-text2"}>Tier</th>
-          <th className={"p-3 bg-bg3 font-[500] text-xs text-text2"}>Win rate</th>
-          <th className={"p-3 bg-bg3 font-[500] text-xs text-text2"}>Pick rate</th>
-          <th className={"p-3 bg-bg3 font-[500] text-xs text-text2"}>Avg. Solokills</th>
-          <th className={"p-3 bg-bg3 font-[500] text-xs text-text2"}>Avg. CS/m</th>
-          <th className={"p-3 bg-bg3 font-[500] text-xs text-text2"}>Avg. Dmg/m</th>
-          <th className={"p-3 bg-bg3 font-[500] text-xs text-text2"}>Dmg type</th>
-          <th className={"p-3 bg-bg3 font-[500] text-xs text-text2"}>Weak against</th>
+          <th className={`p-3 bg-bg3 font-[500] text-xs text-text2 border-b-2 border-bg3`}>
+            Rank
+          </th>
+          <th className={`p-3 bg-bg3 font-[500] text-xs text-text2 border-b-2 border-bg3`}>
+            Role
+          </th>
+          <th className={`sticky -left-1 p-3 bg-bg3 font-[500] text-xs text-text2 border-b-2 border-bg3`}>
+            Champion
+          </th>
+          <th
+            onClick={() => changeSortMethod("power")}
+            className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "power" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
+          >
+            Tier
+          </th>
+          <th
+            onClick={() => changeSortMethod("winRate")}
+            className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "winRate" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
+          >
+            Win rate
+          </th>
+          <th
+            onClick={() => changeSortMethod("pickRate")}
+            className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "pickRate" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
+          >
+            Pick rate
+          </th>
+          <th
+            onClick={() => changeSortMethod("avgKda")}
+            className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "avgKda" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
+          >
+            Avg. KDA
+          </th>
+          <th
+            onClick={() => changeSortMethod("avgCspm")}
+            className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "avgCspm" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
+          >
+            Avg. CS/m
+          </th>
+          <th
+            onClick={() => changeSortMethod("avgSolokills")}
+            className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "avgSolokills" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
+          >
+            Avg. 1V1Ks
+          </th>
+          <th
+            onClick={() => changeSortMethod("avgDpm")}
+            className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "avgDpm" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
+          >
+            Avg. DMG/m
+          </th>
+          <th className={`p-3 bg-bg3 font-[500] text-xs text-text2 border-b-2 border-bg3`}>
+            Weak against
+          </th>
         </tr>
         </thead>
         <tbody className={"divide-y divide-bg4"}>
@@ -105,11 +159,16 @@ function ChampsTable({champs}) {
               </div>
             </td>
 
-            <td className={"h-14"}>
-              <div className={"flex items-center gap-[10px] w-[150px] pl-4"}>
-                <img alt={"champ-avt"} className={`w-[38px] h-[38px] rounded-xl`}
-                     src={getChampionAvatarUrl(champ.championName, currentPatch)}/>
+            <td className={"sticky -left-1 h-14 bg-bg2"}>
+              <div className={" flex items-center gap-[10px] w-[150px] pl-4"}>
+                <LinkToChampion championName={champ.championName}>
+                  <img alt={"champ-avt"} className={`w-[38px] h-[38px] rounded-xl`}
+                       src={getChampionAvatarUrl(champ.championName, currentPatch)}/>
+                </LinkToChampion>
+
+                <LinkToChampion championName={champ.championName}>
                 <div className={"font-[500]"}>{champ.championDisplayName}</div>
+                </LinkToChampion>
               </div>
             </td>
 
@@ -118,28 +177,33 @@ function ChampsTable({champs}) {
             </td>
 
             <td className={"h-14"}>
-              <div className={`text-center font-[500] text-text2`}>{(champ.winRate * 100).toFixed(2)}%</div>
+              <div className={`text-center font-[500] ${sortKey === "winRate" ? "text-text1" : "text-text2"}`}>{(champ.winRate * 100).toFixed(2)}%</div>
             </td>
 
             <td className={"h-14"}>
-              <div className={`text-center font-[500] text-text2`}>{(champ.pickRate * 100).toFixed(2)}%</div>
+              <div className={`text-center font-[500] ${sortKey === "pickRate" ? "text-text1" : "text-text2"}`}>{(champ.pickRate * 100).toFixed(2)}%</div>
             </td>
 
             <td className={"h-14"}>
-              <div className={`text-center font-[500] text-text2`}>{(champ.avgSolokills).toFixed(1)}</div>
+              <div className={`text-center font-[500] ${sortKey === "avgKda" ? "text-text1" : "text-text2"}`}>{(champ.avgKda).toFixed(2)}</div>
             </td>
 
             <td className={"h-14"}>
-              <div className={`text-center font-[500] text-text2`}>{(champ.avgCspm).toFixed(1)}</div>
+              <div className={`text-center font-[500] ${sortKey === "avgCspm" ? "text-text1" : "text-text2"}`}>{(champ.avgCspm).toFixed(2)}</div>
+            </td>
+
+
+
+            <td className={"h-14"}>
+              <div className={`text-center font-[500] ${sortKey === "avgSolokills" ? "text-text1" : "text-text2"}`}>{(champ.avgSolokills).toFixed(2)}</div>
             </td>
 
             <td className={"h-14"}>
-              <div className={`text-center font-[500] text-text2`}>{(champ.avgDpm).toFixed(0)}</div>
-            </td>
-
-            <td className={"h-14"}>
-              <div className={"flex justify-center"}>
-                <div className={`w-[70px]`}>
+              <div className={"flex justify-center items-center"}>
+                <div className={`w-[70px] flex flex-col items-center gap-[4px]`}>
+                  <div className={`text-center text-xs font-[500] ${sortKey === "avgDpm" ? "text-text1" : "text-text2"}`}>
+                    {(champ.avgDpm).toFixed(0)}
+                  </div>
                   <DmgTypeChart physical={champ.avgPhysicalDmg} magic={champ.avgMagicDmg} trueDmg={champ.avgTrueDmg}/>
                 </div>
               </div>

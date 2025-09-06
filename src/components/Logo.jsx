@@ -12,7 +12,7 @@ export default function Logo({size = "small"}) {
   }
 
   return (
-    <div className={"flex gap-1 select-none"}>
+    <div className={"flex gap-[2px] select-none"}>
       <div className={`${bigTextSizeClassName} font-[500]`}>CHALLENGER</div>
       <div className={`${smallTextSizeClassName} text-main font-[500]`}>.GG</div>
     </div>
