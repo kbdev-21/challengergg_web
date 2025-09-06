@@ -25,3 +25,9 @@ export async function fetchAllChampionStats() {
   const response = await axios.get(url);
   return response.data;
 }
+
+export async function fetchChampionStatByChampionName(championName) {
+  const url = `${baseUrl}/api/v1/analytics/champstats/by-championname/${championName}`;
+  const response = await axios.get(url);
+  return response.data;
+}

@@ -65,8 +65,8 @@ export default function ProfilePage() {
           </div>
           <div className={"flex flex-col gap-3"}>
             <div className={"flex gap-2 flex-row"}>
-              <div className={"font-[500] text-xl sm:text-2xl truncate"}>{playerDto.gameName}</div>
-              <div className={"font-[400] text-xl sm:text-2xl text-text2"}>#{playerDto.tagLine}</div>
+              <div className={"font-[500] text-xl xs:text-2xl truncate"}>{playerDto.gameName}</div>
+              <div className={"font-[400] text-xl xs:text-2xl text-text2"}>#{playerDto.tagLine}</div>
             </div>
             <button
               className={"bg-main cursor-pointer py-[5px] px-6 rounded-md w-fit font-[600] text-sm text-black flex items-center gap-2"}>

@@ -1,9 +1,17 @@
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 import Logo from "../Logo.jsx";
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
+import {useEffect} from "react";
 
 export default function PageLayout({ children }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Scroll to top whenever the route changes
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <div className="bg-bg1 text-text1 font-default font-normal text-sm">
       <Header/>

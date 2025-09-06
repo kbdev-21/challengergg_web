@@ -8,6 +8,7 @@ import {getChampionAvatarUrl} from "../services/ddragonApi.js";
 import {useGlobal} from "../contexts/GlobalContext.jsx";
 import {getTextColorForChampionTier} from "../common/stringUtils.js";
 import LinkToChampion from "../components/link/LinkToChampion.jsx";
+import {BAD_WIN_RATE} from "../common/constants.js";
 
 export default function ChampionsPage() {
   const [positionFilter, setPositionFilter] = useState("TOP");
@@ -142,7 +143,7 @@ function ChampsTable({champs}) {
             Avg. DMG/m
           </th>
           <th className={`p-3 bg-bg3 font-[500] text-xs text-text2 border-b-2 border-bg3`}>
-            Weak against
+            Counter picks
           </th>
         </tr>
         </thead>
@@ -200,7 +201,7 @@ function ChampsTable({champs}) {
 
             <td className={"h-14"}>
               <div className={"flex justify-center items-center"}>
-                <div className={`w-[70px] flex flex-col items-center gap-[4px]`}>
+                <div className={`w-16 flex flex-col items-center gap-[4px]`}>
                   <div className={`text-center text-xs font-[500] ${sortKey === "avgDpm" ? "text-text1" : "text-text2"}`}>
                     {(champ.avgDpm).toFixed(0)}
                   </div>
@@ -213,9 +214,10 @@ function ChampsTable({champs}) {
               <div className={"flex justify-center gap-1"}>
                 {champ.matchUps
                   .filter((m) => m.picks >= 20)
-                  .filter((m) => m.winRate <= 0.4)
+                  .filter((m) => m.winRate < BAD_WIN_RATE)
                   .slice(0, 3).map((matchUp, index) => {
-                    return (<div key={index} className="w-6 h-6 overflow-hidden rounded-full">
+                    return (
+                      <div key={index} className="w-6 h-6 overflow-hidden rounded-full">
                       <img
                         alt="avt"
                         src={getChampionAvatarUrl(matchUp.opponentChampionName, currentPatch)}
