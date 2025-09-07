@@ -3,6 +3,7 @@ import Logo from "../Logo.jsx";
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import {useEffect} from "react";
+import {Tooltip} from "react-tooltip";
 
 export default function PageLayout({ children }) {
   const location = useLocation();
@@ -21,6 +22,7 @@ export default function PageLayout({ children }) {
         </div>
       </div>
       <Footer/>
+      <Tooltip id="text-tooltip" className="max-w-72 text-center" opacity={1} delayShow={100} />
     </div>
   );
 }

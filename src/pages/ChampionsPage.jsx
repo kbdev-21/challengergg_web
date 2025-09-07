@@ -9,6 +9,7 @@ import {useGlobal} from "../contexts/GlobalContext.jsx";
 import {getTextColorForChampionTier, getTwoPathPatch} from "../common/stringUtils.js";
 import LinkToChampion from "../components/link/LinkToChampion.jsx";
 import {BAD_WIN_RATE} from "../common/constants.js";
+import TextTooltip from "../components/TextTooltip.jsx";
 
 export default function ChampionsPage() {
   const {currentPatch} = useGlobal();
@@ -131,25 +132,25 @@ function ChampsTable({champs}) {
             onClick={() => changeSortMethod("avgKda")}
             className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "avgKda" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
           >
-            Avg. KDA
+            <TextTooltip text={"Average KDA score per match"}>Avg. KDA</TextTooltip>
           </th>
           <th
             onClick={() => changeSortMethod("avgKp")}
             className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "avgKp" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
           >
-            Avg. KP
+            <TextTooltip text={"Average Kill Participation per match"}>Avg. KP</TextTooltip>
           </th>
           <th
             onClick={() => changeSortMethod("avgSolokills")}
             className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "avgSolokills" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
           >
-            Avg. 1V1Ks
+            <TextTooltip text={"Average Solo-Kills per match"}>Avg. 1V1Ks</TextTooltip>
           </th>
           <th
             onClick={() => changeSortMethod("avgDpm")}
             className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "avgDpm" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
           >
-            Avg. DMG/m
+            <TextTooltip text={"Average Damage per minute and Damage type contribution chart"}>Avg. DMG/m</TextTooltip>
           </th>
           <th className={`p-3 bg-bg3 font-[500] text-xs text-text2 border-b-2 border-bg3`}>
             Counter picks
@@ -159,16 +160,19 @@ function ChampsTable({champs}) {
         <tbody className={"divide-y divide-bg4"}>
         {champs.map((champ, index) => (
           <tr key={champ.code}>
+            {/* Index cell */}
             <td className={"h-14"}>
               <div className={"text-center text-text2 font-[500]"}>{index + 1}</div>
             </td>
 
+            {/* Position cell */}
             <td className={"h-14"}>
               <div className={"flex justify-center items-center"}>
                 <PositionIcon position={champ.position} size={18}/>
               </div>
             </td>
 
+            {/* Champion cell */}
             <td className={"sticky -left-1 h-14 bg-bg2"}>
               <div className={" flex items-center gap-[10px] w-[150px] pl-4"}>
                 <LinkToChampion championName={champ.championName} position={champ.position}>
@@ -185,24 +189,33 @@ function ChampsTable({champs}) {
               </div>
             </td>
 
+            {/* Tier cell */}
             <td className={"h-14"}>
               <div className={`text-center font-[500] ${getTextColorForChampionTier(champ.tier)}`}>{champ.tier}</div>
             </td>
 
+            {/* Win rate cell */}
             <td className={"h-14"}>
               <div className={`text-center font-[500] ${sortKey === "winRate" ? "text-text1" : "text-text2"}`}>{(champ.winRate * 100).toFixed(2)}%</div>
             </td>
 
+            {/* Pick rate cell */}
             <td className={"h-14"}>
               <div className={`text-center font-[500] ${sortKey === "pickRate" ? "text-text1" : "text-text2"}`}>{(champ.pickRate * 100).toFixed(2)}%</div>
             </td>
 
+            {/* Avg KDA cell */}
             <td className={"h-14"}>
-              <div className={`text-center font-[500] ${sortKey === "avgKda" ? "text-text1" : "text-text2"}`}>{(champ.avgKda).toFixed(2)}</div>
-            </td>
 
+              <div className={`text-center font-[500] ${sortKey === "avgKda" ? "text-text1" : "text-text2"}`}>{(champ.avgKda).toFixed(2)}</div>
+
+              </td>
+
+            {/* Avg KP cell */}
             <td className={"h-14"}>
-              <div className={`text-center font-[500] ${sortKey === "avgKp" ? "text-text1" : "text-text2"}`}>{(champ.avgKp * 100).toFixed(2)}%</div>
+
+                <div className={`text-center font-[500] ${sortKey === "avgKp" ? "text-text1" : "text-text2"}`}>{(champ.avgKp * 100).toFixed(2)}%</div>
+
             </td>
 
 

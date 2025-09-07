@@ -1,23 +1,22 @@
 import {useGlobal} from "../contexts/GlobalContext.jsx";
 import {
   getChampionAvatarUrl, getItemImageUrl,
-  getProfileIconUrl,
   getRuneImageUrl,
   getRuneStyleImageUrl,
   getSpellImageUrl
 } from "../services/ddragonApi.js";
 import {Bookmark, ChevronDown, Star} from "lucide-react";
 import {useState} from "react";
-import {queueEnumToShortTextMap, queueEnumToTextMap, rankImgMap} from "../common/constants.js";
+import {queueEnumToShortTextMap} from "../common/constants.js";
 import {
   formatSecondsToMinutesAndSeconds,
-  getTimeSinceGameStart, kdaFormat, placementToDisplayString,
-  upperCaseFirstLowerCaseAll
+  getTimeSinceGameStart, kdaFormat, placementToDisplayString
 } from "../common/stringUtils.js";
 import KbScoreDisplay from "../components/KbScoreDisplay.jsx";
 import PositionIcon from "./PositionIcon.jsx";
 import LinkToProfile from "./link/LinkToProfile.jsx";
 import LinkToChampion from "./link/LinkToChampion.jsx";
+import TextTooltip from "./TextTooltip.jsx";
 
 export default function MatchCard({matchDto, puuid}) {
   const {currentPatch} = useGlobal();
@@ -283,6 +282,7 @@ function MatchDetail({matchDto}) {
 
             {/* KDA cell */}
             <td className={"p-2"}>
+              <TextTooltip text={"KDA, KDA score and Kill Participation"}>
               <div className={'flex flex-col justify-center items-center w-16'}>
                 <div
                   className={"font-[500] text-xs"}>{performance.kills} / {performance.deaths} / {performance.assists}</div>
@@ -290,6 +290,7 @@ function MatchDetail({matchDto}) {
                   className={"text-xs text-text2"}>{kdaFormat(performance.kda)} ({(performance.killParticipation * 100).toFixed(0)}%)
                 </div>
               </div>
+              </TextTooltip>
             </td>
 
             {/* Damage cell */}
@@ -302,19 +303,23 @@ function MatchDetail({matchDto}) {
 
             {/* CS cell*/}
             <td className={"p-2"}>
+              <TextTooltip text={"CS and Total Gold"}>
               <div className={"flex flex-col gap-[2px]"}>
                 <div className="text-xs font-[500]">{performance.totalCs}</div>
                 <div className="text-xs font-[500] text-text2">{performance.totalGold}</div>
               </div>
+              </TextTooltip>
             </td>
 
             {/* Vision cell */}
             <td className={"p-2"}>
+              <TextTooltip text={"Pink wards, Wards placed and Wards killed"}>
               <div className={"flex flex-col gap-[2px]"}>
                 <div className="text-xs font-[500]">{performance.pinkWardsPlaced}</div>
                 <div
                   className="text-xs font-[500] text-text2">{performance.wardsPlaced} / {performance.wardsKilled}</div>
               </div>
+              </TextTooltip>
             </td>
 
             {/* Items cell */}
