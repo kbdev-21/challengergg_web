@@ -21,6 +21,8 @@ import KbScoreDisplay from "../components/KbScoreDisplay.jsx";
 import MatchCard from "../components/MatchCard.jsx";
 import PositionIcon from "../components/PositionIcon.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
+import ErrorAlert from "../components/ErrorAlert.jsx";
+import ComingSoon from "../components/ComingSoon.jsx";
 
 export default function ProfilePage() {
   const {currentPatch} = useGlobal();
@@ -42,7 +44,7 @@ export default function ProfilePage() {
   });
 
   if (isLoading) return <LoadingSpinner/>;
-  if (isError) return <div>Error</div>;
+  if (isError) return <ErrorAlert/>;
 
 
   return (
@@ -59,17 +61,21 @@ export default function ProfilePage() {
               alt={"profileIcon"}
             />
             <div
-              className={"absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-bg4 shadow-md py-1 px-2 font-[500] text-xs"}>
+              className={"absolute bottom-2 sm:-bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-bg4 shadow-md py-1 px-2 font-[500] text-xs"}>
               {playerDto.summonerLevel}
             </div>
           </div>
-          <div className={"flex flex-col gap-3"}>
-            <div className={"flex gap-2 flex-row"}>
+          <div className={"flex flex-col gap-1"}>
+            <div className={"flex gap-2"}>
               <div className={"font-[500] text-xl xs:text-2xl truncate"}>{playerDto.gameName}</div>
               <div className={"font-[400] text-xl xs:text-2xl text-text2"}>#{playerDto.tagLine}</div>
             </div>
+            <div className={"flex gap-2"}>
+              <div className={"font-[400] text-sm text-text2"}>{playerDto.region} Server</div>
+            </div>
             <button
-              className={"bg-main cursor-pointer py-[5px] px-6 rounded-md w-fit font-[600] text-sm text-black flex items-center gap-2"}>
+              className={"mt-2 bg-main cursor-pointer py-[5px] px-6 rounded-md w-fit font-[600] text-sm text-black flex items-center gap-2"}
+            >
               Follow
             </button>
           </div>
@@ -78,25 +84,51 @@ export default function ProfilePage() {
         {/* Menu section */}
         <div className={"flex gap-4 px-3 xs:px-5"}>
           <div
-            className={`px-2 pb-3 text-sm font-[500] ${currentMenuSelection === 0 ? "border-b-2 border-b-main" : "text-text2"}`}>
+            onClick={() => setCurrentMenuSelection(0)}
+            className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${currentMenuSelection === 0 ? "border-b-2 border-b-main" : "text-text2"}`}>
             Overview
           </div>
           <div
-            className={`px-2 pb-3 text-sm font-[500] ${currentMenuSelection === 1 ? "border-b-2 border-b-main" : "text-text2"}`}>
+            onClick={() => setCurrentMenuSelection(1)}
+            className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${currentMenuSelection === 1 ? "border-b-2 border-b-main" : "text-text2"}`}
+          >
             Analytics
           </div>
           <div
-            className={`px-2 pb-3 truncate text-sm font-[500] ${currentMenuSelection === 2 ? "border-b-2 border-b-main" : "text-text2"}`}>
-            Live Game
+            onClick={() => setCurrentMenuSelection(2)}
+            className={`cursor-pointer px-2 pb-3 truncate text-sm font-[500] ${currentMenuSelection === 2 ? "border-b-2 border-b-main" : "text-text2"}`}
+          >
+            Live Match
           </div>
         </div>
       </div>
 
 
       {/* Overview Section */}
-      <OverviewSection playerData={playerDto}/>
+      {currentMenuSelection === 0 && (
+        <OverviewSection playerData={playerDto}/>
+      )}
+      {currentMenuSelection === 1 && (
+        <AnalyticsSection/>
+      )}
+      {currentMenuSelection === 2 && (
+        <LiveMatchSection/>
+      )}
+
     </div>
   );
+}
+
+function AnalyticsSection() {
+  return (
+    <ComingSoon/>
+  );
+}
+
+function LiveMatchSection() {
+  return (
+    <ComingSoon/>
+  )
 }
 
 function OverviewSection({ playerData }) {

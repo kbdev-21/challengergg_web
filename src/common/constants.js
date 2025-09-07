@@ -3,7 +3,8 @@ export const regionCodeMap = {
   "KR": "KR",
   "NA": "NA1",
   "EUW": "EUW1",
-  "EUN": "EUN1"
+  "EUN": "EUN1",
+  "BR": "BR1"
 }
 
 export const positionTextFormatMap = {

@@ -1,8 +1,8 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {fetchChampionStatByChampionName} from "../services/challengerggApi.js";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {
   getChampionAvatarUrl,
   getItemImageUrl,
@@ -16,10 +16,10 @@ import {getTextColorForChampionTier, getTwoPathPatch, getWinRateColorClassName} 
 import {BAD_WIN_RATE, GOOD_WIN_RATE, positionTextFormatMap} from "../common/constants.js";
 import LinkToChampion from "../components/link/LinkToChampion.jsx";
 import FullRuneBoard from "../components/FullRuneBoard.jsx";
+import ErrorAlert from "../components/ErrorAlert.jsx";
 
 export default function ChampionPage() {
-  const params = useParams();
-  const championName = params.championName;
+  const { championName } = useParams();
 
   const {
     data: statDtos,
@@ -30,18 +30,40 @@ export default function ChampionPage() {
     queryFn: () => fetchChampionStatByChampionName(championName),
   });
 
-  if (isLoading) return <LoadingSpinner/>;
-  if (isError) return <div>Error</div>;
+  if(isLoading) return <LoadingSpinner/>;
+  if(isError) return <ErrorAlert/>;
+  if(statDtos.length === 0) return <ErrorAlert/>;
 
   return (
     <BuildDisplay statDtos={statDtos}/>
   )
 }
 
+/* TODO: use position instead of index */
 function BuildDisplay({statDtos}) {
+  const {position} = useParams();
   const {currentPatch} = useGlobal();
 
-  const [buildIndex, setBuildIndex] = useState(0);
+  const navigate = useNavigate();
+
+  // find index based on URL param
+  const initialIndex = position
+    ? statDtos.findIndex((dto) => dto.position === position.toUpperCase())
+    : 0;
+
+  const [buildIndex, setBuildIndex] = useState(initialIndex === -1 ? 0 : initialIndex);
+
+  // if the URL param changes, update index
+  useEffect(() => {
+    if (position) {
+      const idx = statDtos.findIndex((dto) => dto.position === position.toUpperCase());
+      if (idx !== -1) {
+        setBuildIndex(idx);
+      } else {
+        navigate(`/champions/${statDtos[0].championName}`, { replace: true });
+      }
+    }
+  }, [position, statDtos]);
 
   const totalPickRate = statDtos.reduce((sum, dto) => sum + dto.pickRate, 0);
   const build = statDtos[buildIndex];
@@ -78,7 +100,10 @@ function BuildDisplay({statDtos}) {
                   <div
                     key={statDto.code}
                     className={`${isSelected && "bg-bg4"} cursor-pointer flex gap-3 items-center border border-bg4 rounded-md p-2`}
-                    onClick={() => setBuildIndex(index)}
+                    onClick={() => {
+                      setBuildIndex(index);
+                      navigate(`/champions/${build.championName}/${statDto.position.toLowerCase()}`, {replace: true});
+                    }}
                   >
                     <PositionIcon position={statDto.position} active={isSelected} size={20}/>
                     <div className={`font-[500] ${isSelected ? "text-text1" : "text-text3"}`}>{pickRateOnChamp}%</div>
@@ -147,7 +172,7 @@ function Body({build}) {
           {/* Rune board */}
           <div className={"w-full max-w-[458px] flex flex-col gap-6 items-center"}>
             <div className={"text-xs font-[500] text-text2"}>Recommended Rune Build</div>
-            <FullRuneBoard rune={build.bestRunes[runeIndexSelected]}/>
+            <FullRuneBoard runeDto={build.bestRunes[runeIndexSelected]}/>
           </div>
 
           {/* Spells and boots */}

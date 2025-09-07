@@ -6,6 +6,8 @@ import ChampionsPage from "./pages/ChampionsPage.jsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {GlobalProvider} from "./contexts/GlobalContext.jsx";
 import ChampionPage from "./pages/ChampionPage.jsx";
+import LeaderboardPage from "./pages/LeaderboardPage.jsx";
+import ChatPage from "./pages/ChatPage.jsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +22,9 @@ export default function App() {
               <Route path="/profile/:region/:nameAndTag" element={<ProfilePage />} />
               <Route path="/champions" element={<ChampionsPage />} />
               <Route path="/champions/:championName" element={<ChampionPage />} />
+              <Route path="/champions/:championName/:position" element={<ChampionPage />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
+              <Route path="/chat" element={<ChatPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </PageLayout>

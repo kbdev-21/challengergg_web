@@ -36,7 +36,7 @@ export default function ChampionsPage() {
   return (
     <div className={"flex flex-col gap-2"}>
       {/* Introduction */}
-      <div>
+      <div className={"px-2"}>
         <div className={"mb-1 font-[600] text-lg"}>LoL Champions Tier List</div>
         <div className={"mb-4 text-text2 font-[500]"}>
           Analytics of Elite tier matches (Master, Grandmaster, Challenger) from VN, KR, NA and EU servers for patch {getTwoPathPatch(currentPatch)}.</div>
@@ -171,7 +171,7 @@ function ChampsTable({champs}) {
 
             <td className={"sticky -left-1 h-14 bg-bg2"}>
               <div className={" flex items-center gap-[10px] w-[150px] pl-4"}>
-                <LinkToChampion championName={champ.championName}>
+                <LinkToChampion championName={champ.championName} position={champ.position}>
                   <img
                     alt={"champ-avt"} className={`w-[38px] h-[38px] rounded-xl`}
                     src={getChampionAvatarUrl(champ.championName, currentPatch)}
@@ -179,7 +179,7 @@ function ChampsTable({champs}) {
                   />
                 </LinkToChampion>
 
-                <LinkToChampion championName={champ.championName}>
+                <LinkToChampion championName={champ.championName} position={champ.position}>
                 <div className={"font-[500]"}>{champ.championDisplayName}</div>
                 </LinkToChampion>
               </div>

@@ -51,8 +51,8 @@ export default function SearchBar({bgStyle = "bg-bg2"}) {
     let gameName = searchText;
     let tagLine = regionCodeMap[selectedRegion];
     if (searchText.includes("#")) {
-      gameName = searchText.split("#")[0] !== "" ? searchText.split("#")[0] : "Hide on bush";
-      tagLine = searchText.split("#")[1] !== "" ? searchText.split("#")[1] : regionCodeMap[selectedRegion];
+      gameName = searchText.split("#")[0] !== "" ? searchText.split("#")[0].trim() : "Hide on bush";
+      tagLine = searchText.split("#")[1] !== "" ? searchText.split("#")[1].trim() : regionCodeMap[selectedRegion];
     }
     navigate(`/profile/${selectedRegion.toLowerCase()}/${gameName}-${tagLine}`);
   }
@@ -98,8 +98,7 @@ export default function SearchBar({bgStyle = "bg-bg2"}) {
       </div>
       <div className={`absolute ${isDropdownOpen ? "flex" : "hidden"} justify-center w-full px-4`}>
         <div className={"mt-1 w-full rounded-sm bg-bg2 border border-bg3"}>
-          {isLoading && <LoadingSpinner/>}
-          {!isLoading && searchResult ? (
+          {isLoading ? (<></>) : searchResult ? (
             <SearchResultDisplay searchResult={searchResult}/>
           ) : (
             <div
@@ -130,7 +129,7 @@ export default function SearchBar({bgStyle = "bg-bg2"}) {
       };
     }, []);
 
-    const regionList = ["VN", "KR", "NA", "EUW", "EUN"];
+    const regionList = ["VN", "KR", "EUW", "EUN", "NA", "BR"];
 
     return (
       <div ref={regionSelectorRef} className={"relative"}>
@@ -142,7 +141,7 @@ export default function SearchBar({bgStyle = "bg-bg2"}) {
           className={"flex items-center justify-between cursor-pointer"}
         >
           <div className={"font-[600] text-main text-center w-8"}>{selectedRegion}</div>
-          <ChevronDown className={"text-text2"} size={13} strokeWidth={4}/>
+          <ChevronDown className={`text-text2 ${isOpen && "rotate-180"}`} size={13} strokeWidth={4}/>
         </div>
         {isOpen && (
           <div className={"absolute bg-bg2 border border-bg3 flex flex-col mt-1 -left-2"}>
@@ -179,7 +178,7 @@ function SearchResultDisplay({searchResult}) {
       {(champions.length === 0 && players.length === 0) && (
         <div
           className={"w-full flex justify-center items-center text-center py-10 px-4 xs:px-10 font-[500] text-text2"}>
-          First time? Enter GameName#Tag. Afterwards, you can just search for it
+          First time? Enter GameName #Tag. Afterwards, you can just search for it
         </div>
       )}
       {champions.length > 0 && champions.slice(0, displayItems).map(((champion, index) => (
