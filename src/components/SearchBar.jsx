@@ -1,6 +1,6 @@
 import {ChevronDown, Search} from "lucide-react";
 import {useEffect, useRef, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {search} from "../services/challengerggApi.js";
 import LoadingSpinner from "./LoadingSpinner.jsx";
@@ -11,12 +11,18 @@ import {positionTextFormatMap, regionCodeMap} from "../common/constants.js";
 import LinkToProfile from "./link/LinkToProfile.jsx";
 import LinkToChampion from "./link/LinkToChampion.jsx";
 
-export default function SearchBar() {
+export default function SearchBar({bgStyle = "bg-bg2"}) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [selectedRegion, setSelectedRegion] = useState("VN");
   const [searchText, setSearchText] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    setIsDropdownOpen(false);
+    setSearchText("");
+  }, [location.pathname]);
 
   const {
     data: searchResult,
@@ -36,7 +42,7 @@ export default function SearchBar() {
     }
     if (searchResult && searchResult.players.length > 0) {
       const player = searchResult.players[0];
-      navigate(`/profiles/${player.region.toLowerCase()}/${player.gameName}-${player.tagLine}`);
+      navigate(`/profile/${player.region.toLowerCase()}/${player.gameName}-${player.tagLine}`);
       return;
     }
     if (searchText === "") {
@@ -48,7 +54,7 @@ export default function SearchBar() {
       gameName = searchText.split("#")[0] !== "" ? searchText.split("#")[0] : "Hide on bush";
       tagLine = searchText.split("#")[1] !== "" ? searchText.split("#")[1] : regionCodeMap[selectedRegion];
     }
-    navigate(`/profiles/${selectedRegion.toLowerCase()}/${gameName}-${tagLine}`);
+    navigate(`/profile/${selectedRegion.toLowerCase()}/${gameName}-${tagLine}`);
   }
 
   const searchBarRef = useRef();
@@ -68,7 +74,7 @@ export default function SearchBar() {
 
   return (
     <div ref={searchBarRef} className={"relative"}>
-      <div className={"w-full h-12 bg-bg2 rounded-full border border-bg3 flex items-center px-4 gap-4"}>
+      <div className={`w-full h-12 ${bgStyle} rounded-full border border-bg3 flex items-center px-4 gap-4`}>
         <RegionSelector/>
         <form
           className={"w-full flex"}
@@ -86,11 +92,11 @@ export default function SearchBar() {
             placeholder={"Search for champions, players"}
           />
           <button type={"submit"}>
-            <Search className={"text-text2 cursor-pointer"} size={20} strokeWidth={2.25}/>
+            <Search className={"text-text2 cursor-pointer ml-1"} size={20} strokeWidth={2.25}/>
           </button>
         </form>
       </div>
-      <div className={`absolute ${isDropdownOpen ? "flex" : "hidden"} justify-center w-full px-4 xs:pl-[76px] xs:pr-10`}>
+      <div className={`absolute ${isDropdownOpen ? "flex" : "hidden"} justify-center w-full px-4`}>
         <div className={"mt-1 w-full rounded-sm bg-bg2 border border-bg3"}>
           {isLoading && <LoadingSpinner/>}
           {!isLoading && searchResult ? (

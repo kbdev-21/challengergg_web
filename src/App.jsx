@@ -17,7 +17,7 @@ export default function App() {
           <PageLayout>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/profiles/:region/:nameAndTag" element={<ProfilePage />} />
+              <Route path="/profile/:region/:nameAndTag" element={<ProfilePage />} />
               <Route path="/champions" element={<ChampionsPage />} />
               <Route path="/champions/:championName" element={<ChampionPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />

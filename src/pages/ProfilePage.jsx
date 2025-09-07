@@ -46,7 +46,7 @@ export default function ProfilePage() {
 
 
   return (
-    <div className={"pt-10"}>
+    <div className={""}>
       {/* Top header */}
       <div className={"w-full bg-bg2 border border-bg3 rounded-md flex flex-col gap-4"}>
         {/* Info section */}

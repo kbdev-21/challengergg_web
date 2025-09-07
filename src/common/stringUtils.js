@@ -1,3 +1,5 @@
+import {BAD_WIN_RATE, GOOD_WIN_RATE} from "./constants.js";
+
 export function formatNumber(number) {
   return number.toLocaleString("en-US");
 }
@@ -104,4 +106,16 @@ export function getTimeSinceGameStart(gameStartTimestamp) {
   if (hours > 0) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
   if (minutes > 0) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
   return `${seconds} second${seconds > 1 ? "s" : ""} ago`;
+}
+
+export function getWinRateColorClassName(winRate) {
+  let winRateColorClassName = "text-lose";
+  if(winRate >= BAD_WIN_RATE) winRateColorClassName = "text-text2";
+  if(winRate >= GOOD_WIN_RATE) winRateColorClassName = "text-win";
+
+  return winRateColorClassName;
+}
+
+export function getTwoPathPatch(patch) {
+  return patch?.split(".").slice(0, 2).join(".");
 }

@@ -6,11 +6,13 @@ import PositionIcon from "../components/PositionIcon.jsx";
 import {Asterisk, Cannabis, LoaderPinwheel} from "lucide-react";
 import {getChampionAvatarUrl} from "../services/ddragonApi.js";
 import {useGlobal} from "../contexts/GlobalContext.jsx";
-import {getTextColorForChampionTier} from "../common/stringUtils.js";
+import {getTextColorForChampionTier, getTwoPathPatch} from "../common/stringUtils.js";
 import LinkToChampion from "../components/link/LinkToChampion.jsx";
 import {BAD_WIN_RATE} from "../common/constants.js";
 
 export default function ChampionsPage() {
+  const {currentPatch} = useGlobal();
+
   const [positionFilter, setPositionFilter] = useState("TOP");
   const [keyFilter, setKeyFilter] = useState("");
 
@@ -32,7 +34,14 @@ export default function ChampionsPage() {
     .filter(c => c.championName.toLowerCase().includes(keyFilter) || c.championDisplayName.toLowerCase().includes(keyFilter));
 
   return (
-    <div className={"flex flex-col gap-2 pt-10"}>
+    <div className={"flex flex-col gap-2"}>
+      {/* Introduction */}
+      <div>
+        <div className={"mb-1 font-[600] text-lg"}>LoL Champions Tier List</div>
+        <div className={"mb-4 text-text2 font-[500]"}>
+          Analytics of Elite tier matches (Master, Grandmaster, Challenger) from VN, KR, NA and EU servers for patch {getTwoPathPatch(currentPatch)}.</div>
+      </div>
+
       {/* Filter section */}
       <div className={"grid grid-cols-1 gap-y-1 sm:grid-cols-2 bg-bg2 w-full border border-bg3 rounded-md"}>
         <div className={"grid grid-cols-6"}>
@@ -125,10 +134,10 @@ function ChampsTable({champs}) {
             Avg. KDA
           </th>
           <th
-            onClick={() => changeSortMethod("avgCspm")}
-            className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "avgCspm" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
+            onClick={() => changeSortMethod("avgKp")}
+            className={`cursor-pointer p-3 bg-bg3 text-xs border-b-2 ${sortKey === "avgKp" ? "font-[500] text-text1 border-main" : "font-[500] text-text2 border-bg3"}`}
           >
-            Avg. CS/m
+            Avg. KP
           </th>
           <th
             onClick={() => changeSortMethod("avgSolokills")}
@@ -163,8 +172,11 @@ function ChampsTable({champs}) {
             <td className={"sticky -left-1 h-14 bg-bg2"}>
               <div className={" flex items-center gap-[10px] w-[150px] pl-4"}>
                 <LinkToChampion championName={champ.championName}>
-                  <img alt={"champ-avt"} className={`w-[38px] h-[38px] rounded-xl`}
-                       src={getChampionAvatarUrl(champ.championName, currentPatch)}/>
+                  <img
+                    alt={"champ-avt"} className={`w-[38px] h-[38px] rounded-xl`}
+                    src={getChampionAvatarUrl(champ.championName, currentPatch)}
+                    sizes={"50px"}
+                  />
                 </LinkToChampion>
 
                 <LinkToChampion championName={champ.championName}>
@@ -190,7 +202,7 @@ function ChampsTable({champs}) {
             </td>
 
             <td className={"h-14"}>
-              <div className={`text-center font-[500] ${sortKey === "avgCspm" ? "text-text1" : "text-text2"}`}>{(champ.avgCspm).toFixed(2)}</div>
+              <div className={`text-center font-[500] ${sortKey === "avgKp" ? "text-text1" : "text-text2"}`}>{(champ.avgKp * 100).toFixed(2)}%</div>
             </td>
 
 
@@ -222,6 +234,7 @@ function ChampsTable({champs}) {
                         alt="avt"
                         src={getChampionAvatarUrl(matchUp.opponentChampionName, currentPatch)}
                         className="w-full h-full object-cover scale-110"
+                        sizes={"50px"}
                       />
                     </div>)
                   })}
