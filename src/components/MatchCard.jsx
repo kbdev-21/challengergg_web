@@ -203,7 +203,7 @@ function MatchDetail({matchDto}) {
 
   return (
     <div className="w-full bg-bg2 mt-1 border border-bg3 rounded-md overflow-x-auto">
-      <table className="table-auto w-[734px] shrink-0 text-center">
+      <table className="table-auto w-[718px] shrink-0 text-center">
         <thead>
         <tr>
           <th className={"text-start font-[400] text-text2 text-xs p-2 bg-bg3"}>Scoreboard</th>

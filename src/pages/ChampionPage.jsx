@@ -1,6 +1,6 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
-import {fetchChampionStatByChampionName} from "../services/challengerggApi.js";
+import {fetchChampionStatsByChampionName} from "../services/challengerggApi.js";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import {useEffect, useState} from "react";
 import {
@@ -27,7 +27,7 @@ export default function ChampionPage() {
     isError
   } = useQuery({
     queryKey: ["statDtos", championName],
-    queryFn: () => fetchChampionStatByChampionName(championName),
+    queryFn: () => fetchChampionStatsByChampionName(championName),
   });
 
   if(isLoading) return <LoadingSpinner/>;

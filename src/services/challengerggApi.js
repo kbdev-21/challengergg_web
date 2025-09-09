@@ -26,8 +26,17 @@ export async function fetchAllChampionStats() {
   return response.data;
 }
 
-export async function fetchChampionStatByChampionName(championName) {
+export async function fetchChampionStatsByChampionName(championName) {
   const url = `${baseUrl}/api/v1/analytics/champstats/by-championname/${championName}`;
   const response = await axios.get(url);
+  return response.data;
+}
+
+export async function fetchPlayerChampionStatsByPuuid(puuid) {
+  const updateUrl = `${baseUrl}/api/v1/analytics/champstats/by-puuid/${puuid}/update`;
+  await axios.post(updateUrl); // sẽ throw nếu lỗi
+
+  const fetchUrl = `${baseUrl}/api/v1/analytics/champstats/by-puuid/${puuid}`;
+  const response = await axios.get(fetchUrl);
   return response.data;
 }

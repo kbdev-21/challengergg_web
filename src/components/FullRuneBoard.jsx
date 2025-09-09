@@ -23,7 +23,7 @@ export default function FullRuneBoard({runeDto}) {
       <div className={`flex justify-between w-full`}>
         {mainRunes.map(runeId => (
           <div key={runeId} className={`${imgSizeClassName} ${!runeDto.selections.includes(Number(runeId)) && "grayscale opacity-40"} bg-bg1 rounded-[100%] p-[1px]`}>
-            <img alt={"rune-img"} src={getRuneImageUrl(runeId)} />
+            <img alt={"rune-img"} src={getRuneImageUrl(runeId)} sizes={"50px"}/>
           </div>
         ))}
       </div>
@@ -36,17 +36,17 @@ export default function FullRuneBoard({runeDto}) {
       <div className={"w-full flex flex-col gap-4 xs:gap-6"}>
         <div className={"flex justify-between w-full "}>
           {nineRunes.slice(0,3).map(runeId => (
-            <img key={runeId} alt={"rune-img"} src={getRuneImageUrl(runeId)} className={`${imgSizeClassName} ${!runeDto.selections.includes(Number(runeId)) && "grayscale opacity-40"}`}/>
+            <img key={runeId} alt={"rune-img"} sizes={"50px"} src={getRuneImageUrl(runeId)} className={`${imgSizeClassName} ${!runeDto.selections.includes(Number(runeId)) && "grayscale opacity-40"}`}/>
           ))}
         </div>
         <div className={"flex justify-between w-full "}>
           {nineRunes.slice(3,6).map(runeId => (
-            <img key={runeId} alt={"rune-img"} src={getRuneImageUrl(runeId)} className={`${imgSizeClassName} ${!runeDto.selections.includes(Number(runeId)) && "grayscale opacity-40"}`}/>
+            <img key={runeId} alt={"rune-img"} sizes={"50px"} src={getRuneImageUrl(runeId)} className={`${imgSizeClassName} ${!runeDto.selections.includes(Number(runeId)) && "grayscale opacity-40"}`}/>
           ))}
         </div>
         <div className={"flex justify-between w-full "}>
           {nineRunes.slice(6,9).map(runeId => (
-            <img key={runeId} alt={"rune-img"} src={getRuneImageUrl(runeId)} className={`${imgSizeClassName} ${!runeDto.selections.includes(Number(runeId)) && "grayscale opacity-40"}`}/>
+            <img key={runeId} alt={"rune-img"} sizes={"50px"} src={getRuneImageUrl(runeId)} className={`${imgSizeClassName} ${!runeDto.selections.includes(Number(runeId)) && "grayscale opacity-40"}`}/>
           ))}
         </div>
       </div>

@@ -200,7 +200,7 @@ function SearchResultDisplay({searchResult}) {
 
   function ChampionResultLine({champion, highlight = false}) {
     return (
-      <LinkToChampion championName={champion.championName}>
+      <LinkToChampion championName={champion.championName} position={champion.position}>
         <div
           className={`w-full flex gap-2 px-2 h-14 items-center border-b border-bg3 hover:bg-bg4 ${highlight && 'bg-bg4'}`}>
           <div className="w-10 h-10 overflow-hidden rounded-full">

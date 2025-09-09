@@ -9,7 +9,7 @@ import {
   getRuneStyleImageUrl,
   getSpellImageUrl
 } from "../services/ddragonApi.js";
-import {Bookmark, ChevronDown, Star} from "lucide-react";
+import {Bookmark, ChevronDown, ChevronRight, RefreshCcw, Star} from "lucide-react";
 import {useState} from "react";
 import {queueEnumToShortTextMap, queueEnumToTextMap, rankImgMap} from "../common/constants.js";
 import {
@@ -23,6 +23,7 @@ import PositionIcon from "../components/PositionIcon.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
 import ComingSoon from "../components/ComingSoon.jsx";
+import OverviewSection from "../components/profile-page/OverviewSection.jsx";
 
 export default function ProfilePage() {
   const {currentPatch} = useGlobal();
@@ -92,7 +93,7 @@ export default function ProfilePage() {
             onClick={() => setCurrentMenuSelection(1)}
             className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${currentMenuSelection === 1 ? "border-b-2 border-b-main" : "text-text2"}`}
           >
-            Analytics
+            Champions
           </div>
           <div
             onClick={() => setCurrentMenuSelection(2)}
@@ -109,7 +110,7 @@ export default function ProfilePage() {
         <OverviewSection playerData={playerDto}/>
       )}
       {currentMenuSelection === 1 && (
-        <AnalyticsSection/>
+        <ChampionsSection/>
       )}
       {currentMenuSelection === 2 && (
         <LiveMatchSection/>
@@ -119,116 +120,17 @@ export default function ProfilePage() {
   );
 }
 
-function AnalyticsSection() {
-  return (
-    <ComingSoon/>
-  );
-}
-
 function LiveMatchSection() {
   return (
     <ComingSoon/>
   )
 }
 
-function OverviewSection({ playerData }) {
-  const puuid = playerData.puuid;
-  const region = playerData.region;
 
-  const matchPerFetch = 10;
 
-  const {
-    data: matchPages,
-    isLoading,
-    isError,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["matchDtos", puuid, region],
-    queryFn: ({ pageParam = 0 }) =>
-      fetchMatchesByPuuid(puuid, pageParam, matchPerFetch, region),
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length < matchPerFetch) return undefined;
-      return allPages.length * matchPerFetch;
-    },
-  });
-
-  if(isLoading) return <LoadingSpinner/>;
-  if(isError) return <div>Error</div>;
-
-  const matchDtos = matchPages.pages.flat();
-
+function ChampionsSection() {
   return (
-    <div className={"flex flex-col lg:flex-row gap-2 mt-2 w-full"}>
-      {/* Ranks display */}
-      <div className={"flex-1"}>
-        <div className={"bg-bg2 border border-bg3 p-3 flex flex-col gap-2 rounded-md"}>
-          <RankDisplay index={0} />
-          <div className={"border-t border-t-bg4 w-full mt-1 mb-2"}></div>
-          <RankDisplay index={1} />
-        </div>
-      </div>
-
-      {/* Match history */}
-      <div className={"w-full lg:w-[736px] flex flex-col gap-2"}>
-        {matchDtos.map((matchDto) => (
-          <div key={matchDto.matchId}>
-            <MatchCard matchDto={matchDto} puuid={puuid} />
-          </div>
-        ))}
-
-        <button
-          className={
-            "w-full h-12 bg-bg2 rounded-md border border-bg3 flex justify-center items-center text-text2 font-[500] cursor-pointer"
-          }
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage || !hasNextPage}
-        >
-          {isFetchingNextPage ? <LoadingSpinner marginTop={false}/> : hasNextPage ? "Show more matches" : "No more matches"}
-        </button>
-      </div>
-    </div>
+    <ComingSoon/>
   );
-
-  function RankDisplay({ index }) {
-    return (
-      <>
-        <div className={"font-[400] text-sm"}>
-          {queueEnumToTextMap[playerData.ranks[index].queue]}
-        </div>
-        <div className={"flex gap-2"}>
-          <img
-            sizes={"100px"}
-            src={rankImgMap[playerData.ranks[index].tier]}
-            alt={"rank"}
-            className={"w-20"}
-          />
-          <div className={"flex w-full justify-between mt-3 h-[45px]"}>
-            <div className={"flex flex-col justify-between"}>
-              <div className={"font-[500] text-base"}>
-                {upperCaseFirstLowerCaseAll(playerData.ranks[index].tier)}{" "}
-                {!["CHALLENGER", "GRANDMASTER", "MASTER"].includes(
-                  playerData.ranks[index].tier
-                )
-                  ? playerData.ranks[index].division
-                  : ""}
-              </div>
-              <div className={"text-xs text-text2"}>{playerData.ranks[index].points} LP</div>
-            </div>
-            <div className={"flex flex-col justify-between items-end mt-1"}>
-              <div className={"text-xs text-text2"}>
-                {playerData.ranks[index].wins}W {playerData.ranks[index].losses}L
-              </div>
-              <div className={"text-xs text-text2"}>
-                Win rate {(playerData.ranks[index].winRate * 100).toFixed(0)}%
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
 }
-
 

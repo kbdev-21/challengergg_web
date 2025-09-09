@@ -40,7 +40,7 @@ export default function ChampionsPage() {
       <div className={"px-2"}>
         <div className={"mb-1 font-[600] text-lg"}>LoL Champions Tier List</div>
         <div className={"mb-4 text-text2 font-[500]"}>
-          Analytics of Elite tier matches (Master, Grandmaster, Challenger) from VN, KR, NA and EU servers for patch {getTwoPathPatch(currentPatch)}.</div>
+          Analytics of Elite tier matches (Master, Grandmaster, Challenger) from VN, KR, EUs, NA and BR servers for patch {getTwoPathPatch(currentPatch)}.</div>
       </div>
 
       {/* Filter section */}
