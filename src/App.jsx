@@ -19,7 +19,7 @@ export default function App() {
           <PageLayout>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/profile/:region/:nameAndTag" element={<ProfilePage />} />
+              <Route path="/profile/:region/:nameAndTag/:subMenu" element={<ProfilePage />} />
               <Route path="/champions" element={<ChampionsPage />} />
               <Route path="/champions/:championName" element={<ChampionPage />} />
               <Route path="/champions/:championName/:position" element={<ChampionPage />} />

@@ -10,6 +10,7 @@ import {getTextColorForChampionTier, getTwoPathPatch} from "../common/stringUtil
 import LinkToChampion from "../components/link/LinkToChampion.jsx";
 import {BAD_WIN_RATE} from "../common/constants.js";
 import TextTooltip from "../components/TextTooltip.jsx";
+import ErrorAlert from "../components/ErrorAlert.jsx";
 
 export default function ChampionsPage() {
   const {currentPatch} = useGlobal();
@@ -27,7 +28,7 @@ export default function ChampionsPage() {
   });
 
   if (isLoading) return <LoadingSpinner/>;
-  if (isError) return <div>Error</div>;
+  if (isError) return <ErrorAlert/>;
 
   const positionFilterList = ["TOP", "JGL", "MID", "ADC", "SPT", ""];
   const displayChamps = champStatDtos

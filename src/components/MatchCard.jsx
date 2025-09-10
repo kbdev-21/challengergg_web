@@ -32,7 +32,7 @@ export default function MatchCard({matchDto, puuid}) {
       <div
         className={`
           flex justify-between cursor-pointer
-          bg-gradient-to-br ${win ? "from-win/15" : "from-lose/15"} via-bg2 to-bg2 border border-bg3 rounded-[5px] px-3 py-2.5 border-l-[5px] ${win ? "border-l-win" : "border-l-lose"}
+          bg-gradient-to-br ${win ? "from-win/20" : "from-lose/20"} via-bg2 to-bg2 border border-bg3 rounded-[5px] px-3 py-2.5 border-l-[5px] ${win ? "border-l-win" : "border-l-lose"}
         `}
         onClick={() => {
           setIsDisplayDetail(!isDisplayDetail)

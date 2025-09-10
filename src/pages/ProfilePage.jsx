@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useInfiniteQuery, useQuery} from "@tanstack/react-query";
 import {fetchMatchesByPuuid, fetchPlayerDataByGameNameAndTagLine} from "../services/challengerggApi.js";
 import {useGlobal} from "../contexts/GlobalContext.jsx";
@@ -28,12 +28,11 @@ import OverviewSection from "../components/profile-page/OverviewSection.jsx";
 export default function ProfilePage() {
   const {currentPatch} = useGlobal();
 
-  const params = useParams();
-  const name = params.nameAndTag.split("-")[0];
-  const tag = params.nameAndTag.split("-")[1];
-  const region = params.region;
+  const navigate = useNavigate();
 
-  const [currentMenuSelection, setCurrentMenuSelection] = useState(0);
+  const {nameAndTag, region, subMenu} = useParams();
+  const name = nameAndTag.split("-")[0];
+  const tag = nameAndTag.split("-")[1];
 
   const {
     data: playerDto,
@@ -85,19 +84,25 @@ export default function ProfilePage() {
         {/* Menu section */}
         <div className={"flex gap-4 px-3 xs:px-5"}>
           <div
-            onClick={() => setCurrentMenuSelection(0)}
-            className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${currentMenuSelection === 0 ? "border-b-2 border-b-main" : "text-text2"}`}>
+            onClick={() => {
+              navigate(`/profile/${region}/${nameAndTag}/overview`, {replace: true});
+            }}
+            className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${subMenu === "overview" ? "border-b-2 border-b-main" : "text-text2"}`}>
             Overview
           </div>
           <div
-            onClick={() => setCurrentMenuSelection(1)}
-            className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${currentMenuSelection === 1 ? "border-b-2 border-b-main" : "text-text2"}`}
+            onClick={() => {
+              navigate(`/profile/${region}/${nameAndTag}/champions`, {replace: true});
+            }}
+            className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${subMenu === "champions" ? "border-b-2 border-b-main" : "text-text2"}`}
           >
             Champions
           </div>
           <div
-            onClick={() => setCurrentMenuSelection(2)}
-            className={`cursor-pointer px-2 pb-3 truncate text-sm font-[500] ${currentMenuSelection === 2 ? "border-b-2 border-b-main" : "text-text2"}`}
+            onClick={() => {
+              navigate(`/profile/${region}/${nameAndTag}/live-match`, {replace: true});
+            }}
+            className={`cursor-pointer px-2 pb-3 truncate text-sm font-[500] ${subMenu === "live-match" ? "border-b-2 border-b-main" : "text-text2"}`}
           >
             Live Match
           </div>
@@ -106,13 +111,13 @@ export default function ProfilePage() {
 
 
       {/* Overview Section */}
-      {currentMenuSelection === 0 && (
+      {subMenu === "overview" && (
         <OverviewSection playerData={playerDto}/>
       )}
-      {currentMenuSelection === 1 && (
+      {subMenu === "champions" && (
         <ChampionsSection/>
       )}
-      {currentMenuSelection === 2 && (
+      {subMenu === "live-match" && (
         <LiveMatchSection/>
       )}
 

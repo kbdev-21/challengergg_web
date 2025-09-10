@@ -42,7 +42,7 @@ export default function SearchBar({bgStyle = "bg-bg2"}) {
     }
     if (searchResult && searchResult.players.length > 0) {
       const player = searchResult.players[0];
-      navigate(`/profile/${player.region.toLowerCase()}/${player.gameName}-${player.tagLine}`);
+      navigate(`/profile/${player.region.toLowerCase()}/${player.gameName}-${player.tagLine}/overview`);
       return;
     }
     if (searchText === "") {
