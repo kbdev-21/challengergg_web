@@ -5,7 +5,7 @@
     --font-default: "Roboto", sans-serif;
 
     /* Color */
-    --color-main: #ffbb00;
+    --color-main: #ffc300;
 
     --color-bg1: #0d0d12;
     --color-bg2: #15151e;
@@ -19,7 +19,7 @@
     --color-win: #29a2d6;
     --color-lose: #e53e3e;
 
-    --color-rate1: #ffbb00;
+    --color-rate1: #ffc300;
     --color-rate2: #29a2d6;
     --color-rate3: #00bd84;
     --color-rate4: #cccccc;

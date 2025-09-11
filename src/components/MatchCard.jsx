@@ -10,7 +10,7 @@ import {useState} from "react";
 import {queueEnumToShortTextMap} from "../common/constants.js";
 import {
   formatSecondsToMinutesAndSeconds,
-  getTimeSinceGameStart, kdaFormat, placementToDisplayString
+  getTimeSinceTimestamp, kdaFormat, placementToDisplayString
 } from "../common/stringUtils.js";
 import KbScoreDisplay from "../components/KbScoreDisplay.jsx";
 import PositionIcon from "./PositionIcon.jsx";
@@ -45,7 +45,7 @@ export default function MatchCard({matchDto, puuid}) {
               {queueEnumToShortTextMap[matchDto.queue]}
             </div>
             <div className={`text-xs text-text2`}>
-              {getTimeSinceGameStart(matchDto.startTimeStamp)}
+              {getTimeSinceTimestamp(matchDto.startTimeStamp)}
             </div>
           </div>
           <div className={"flex flex-col gap-[3px]"}>

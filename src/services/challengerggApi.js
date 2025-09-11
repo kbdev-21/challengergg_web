@@ -40,3 +40,9 @@ export async function fetchPlayerChampionStatsByPuuid(puuid) {
   const response = await axios.get(fetchUrl);
   return response.data;
 }
+
+export async function fetchMessagesByRoom(room) {
+  const url = `${baseUrl}/api/v1/messages/${room}`;
+  const response = await axios.get(url);
+  return response.data;
+}

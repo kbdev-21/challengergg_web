@@ -85,9 +85,9 @@ export function champTierColor(tier) {
   }
 }
 
-export function getTimeSinceGameStart(gameStartTimestamp) {
+export function getTimeSinceTimestamp(timestamp) {
   const now = Date.now();
-  const diffMs = now - gameStartTimestamp;
+  const diffMs = now - timestamp;
 
   if (diffMs < 0) {
     return "Game hasn't started yet";

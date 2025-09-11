@@ -9,6 +9,7 @@ import MatchCard from "../MatchCard.jsx";
 import ErrorAlert from "../ErrorAlert.jsx";
 import {getChampionAvatarUrl} from "../../services/ddragonApi.js";
 import {useGlobal} from "../../contexts/GlobalContext.jsx";
+import {Link} from "react-router-dom";
 
 export default function OverviewSection({ playerData }) {
   const puuid = playerData.puuid;
@@ -60,9 +61,12 @@ export default function OverviewSection({ playerData }) {
         <div className={"bg-bg2 border border-bg3 p-3 flex flex-col gap-2 rounded-md"}>
           <div className={"flex justify-between items-center pb-1"}>
             <div>Champions</div>
-            <ChevronRight size={16} className={"cursor-pointer"}/>
+            <Link to={`/profile/${region.toLowerCase()}/${playerData.gameName}-${playerData.tagLine}/champions`}>
+              <ChevronRight size={16} className={"cursor-pointer"}/>
+            </Link>
+
           </div>
-          <ChampionsDisplay puuid={playerData.puuid}/>
+          <ChampionsDisplay playerData={playerData} puuid={playerData.puuid}/>
         </div>
       </div>
 
@@ -127,7 +131,7 @@ export default function OverviewSection({ playerData }) {
   }
 }
 
-function ChampionsDisplay({puuid}) {
+function ChampionsDisplay({playerData}) {
   const {currentPatch} = useGlobal();
 
   const {
@@ -135,8 +139,8 @@ function ChampionsDisplay({puuid}) {
     isLoading,
     isError
   } = useQuery({
-    queryKey: ["playerChampStatDtos", puuid],
-    queryFn: () => fetchPlayerChampionStatsByPuuid(puuid),
+    queryKey: ["playerChampStatDtos", playerData.puuid],
+    queryFn: () => fetchPlayerChampionStatsByPuuid(playerData.puuid),
   })
 
   if(isLoading) return <LoadingSpinner/>;
@@ -153,7 +157,13 @@ function ChampionsDisplay({puuid}) {
       ) : (
         <div className={"text-text2 text-xs text-center my-10"}>You have no Ranked Matches to analyze</div>
       )}
-      <div className={"cursor-pointer text-text2 text-xs w-full flex justify-center border-t border-bg3 pt-3"}>Show more + details</div>
+      <Link
+        to={`/profile/${playerData.region.toLowerCase()}/${playerData.gameName}-${playerData.tagLine}/champions`}
+        replace={true}
+        className={"cursor-pointer text-text2 text-xs w-full flex justify-center border-t border-bg3 pt-3"}
+      >
+        Show more + details
+      </Link>
     </div>
   );
 

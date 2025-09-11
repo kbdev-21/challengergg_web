@@ -1,4 +1,4 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useInfiniteQuery, useQuery} from "@tanstack/react-query";
 import {fetchMatchesByPuuid, fetchPlayerDataByGameNameAndTagLine} from "../services/challengerggApi.js";
 import {useGlobal} from "../contexts/GlobalContext.jsx";
@@ -14,7 +14,7 @@ import {useState} from "react";
 import {queueEnumToShortTextMap, queueEnumToTextMap, rankImgMap} from "../common/constants.js";
 import {
   formatSecondsToMinutesAndSeconds,
-  getTimeSinceGameStart, kdaFormat,
+  getTimeSinceTimestamp, kdaFormat,
   upperCaseFirstLowerCaseAll
 } from "../common/stringUtils.js";
 import KbScoreDisplay from "../components/KbScoreDisplay.jsx";
@@ -24,11 +24,10 @@ import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
 import ComingSoon from "../components/ComingSoon.jsx";
 import OverviewSection from "../components/profile-page/OverviewSection.jsx";
+import ChampionsSection from "../components/profile-page/ChampionsSection.jsx";
 
 export default function ProfilePage() {
   const {currentPatch} = useGlobal();
-
-  const navigate = useNavigate();
 
   const {nameAndTag, region, subMenu} = useParams();
   const name = nameAndTag.split("-")[0];
@@ -83,29 +82,24 @@ export default function ProfilePage() {
 
         {/* Menu section */}
         <div className={"flex gap-4 px-3 xs:px-5"}>
-          <div
-            onClick={() => {
-              navigate(`/profile/${region}/${nameAndTag}/overview`, {replace: true});
-            }}
-            className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${subMenu === "overview" ? "border-b-2 border-b-main" : "text-text2"}`}>
+          <Link
+            to={`/profile/${region.toLowerCase()}/${nameAndTag}/overview`} replace={true}
+            className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${subMenu === "overview" ? "border-b-2 border-b-main" : "text-text2"}`}
+          >
             Overview
-          </div>
-          <div
-            onClick={() => {
-              navigate(`/profile/${region}/${nameAndTag}/champions`, {replace: true});
-            }}
+          </Link>
+          <Link
+            to={`/profile/${region.toLowerCase()}/${nameAndTag}/champions`} replace={true}
             className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${subMenu === "champions" ? "border-b-2 border-b-main" : "text-text2"}`}
           >
             Champions
-          </div>
-          <div
-            onClick={() => {
-              navigate(`/profile/${region}/${nameAndTag}/live-match`, {replace: true});
-            }}
-            className={`cursor-pointer px-2 pb-3 truncate text-sm font-[500] ${subMenu === "live-match" ? "border-b-2 border-b-main" : "text-text2"}`}
+          </Link>
+          <Link
+            to={`/profile/${region.toLowerCase()}/${nameAndTag}/live-match`} replace={true}
+            className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${subMenu === "live-match" ? "border-b-2 border-b-main" : "text-text2"}`}
           >
             Live Match
-          </div>
+          </Link>
         </div>
       </div>
 
@@ -133,9 +127,5 @@ function LiveMatchSection() {
 
 
 
-function ChampionsSection() {
-  return (
-    <ComingSoon/>
-  );
-}
+
 
