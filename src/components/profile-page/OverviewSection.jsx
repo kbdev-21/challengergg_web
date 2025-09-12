@@ -63,7 +63,7 @@ export default function OverviewSection({ playerData }) {
         {/* Stat display */}
         <div className={"bg-bg2 border border-bg3 p-3 flex flex-col gap-2 rounded-md"}>
           <div className={"flex justify-between items-center pb-1"}>
-            <div>Champions</div>
+            <div>Recent champions</div>
             <Link to={`/profile/${region.toLowerCase()}/${playerData.gameName}-${playerData.tagLine}/champions`}>
               <ChevronRight size={16} className={"cursor-pointer"}/>
             </Link>

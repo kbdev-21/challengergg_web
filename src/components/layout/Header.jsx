@@ -11,7 +11,7 @@ export default function Header() {
   const isHome = location.pathname === "/";
 
   return (
-    <div className={"fixed top-0 z-40 w-full bg-bg2 border-b border-b-bg3 shadow-md"}>
+    <div className={"w-full bg-bg2 border-b border-b-bg3 shadow-md"}>
       {/* Header content for desktop */}
       <div className={"hidden lg:flex w-full px-8 py-4 justify-between gap-8"}>
         {/* Left part */}

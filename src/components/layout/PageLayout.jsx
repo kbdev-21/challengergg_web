@@ -16,7 +16,7 @@ export default function PageLayout({ children }) {
   return (
     <div className="bg-bg1 text-text1 font-default font-normal text-sm">
       <Header/>
-      <div className={"min-h-[100vh] pt-48 lg:pt-32 pb-32 overflow-x-hidden flex justify-center px-2"}>
+      <div className={"min-h-[100vh] pt-12 pb-32 overflow-x-hidden flex justify-center px-2"}>
         <div className={"w-full max-w-screen-lg"}>
           {children}
         </div>
