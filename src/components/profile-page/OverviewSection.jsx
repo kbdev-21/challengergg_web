@@ -149,7 +149,7 @@ function ChampionsDisplay({playerData}) {
     queryFn: () => fetchPlayerChampionStatsByPuuid(playerData.puuid),
   })
 
-  if(isLoading) return <LoadingSpinner/>;
+  if(isLoading) return <LoadingSpinner marginTop={false}/>;
   if(isError) return <ErrorAlert/>;
 
   return (

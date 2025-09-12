@@ -1,7 +1,7 @@
-import {NavLink, useLocation} from "react-router-dom";
+import {Link, NavLink, useLocation} from "react-router-dom";
 import Logo from "../Logo.jsx";
 import SearchBar from "../SearchBar.jsx";
-import {CircleUserRound, Info, Menu, X} from "lucide-react";
+import {CircleUserRound, Crown, Info, Menu, Swords, X} from "lucide-react";
 import {useState} from "react";
 
 export default function Header() {
@@ -40,13 +40,19 @@ export default function Header() {
           <NavLink to={"/"}>
             <Logo/>
           </NavLink>
-          <div className={"block sm:hidden"}>
-            {isMenuOpen ? (
-              <X strokeWidth={1.75} onClick={() => setIsMenuOpen(false)} className="cursor-pointer"/>
-            ) : (
-              <Menu strokeWidth={1.75} onClick={() => setIsMenuOpen(true)} className="cursor-pointer"/>
-            )}
+          <div className={"flex gap-5"}>
+            <Link to={"/champions"} className={"block sm:hidden"}>
+              <Crown strokeWidth={1.75} size={24}/>
+            </Link>
+            <div className={"block sm:hidden"}>
+              {isMenuOpen ? (
+                <X strokeWidth={1.75} onClick={() => setIsMenuOpen(false)} className="cursor-pointer"/>
+              ) : (
+                <Menu strokeWidth={1.75} onClick={() => setIsMenuOpen(true)} className="cursor-pointer"/>
+              )}
+            </div>
           </div>
+
           <div className={"hidden sm:block h-12"}>
             <HorizontalMenu/>
           </div>
