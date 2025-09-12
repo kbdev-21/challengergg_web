@@ -230,7 +230,7 @@ function Body({build}) {
         <div className={"flex flex-col items-center gap-0.5"}>
           <div className={"text-xs font-[600]"}>{(item.pickRate * 100).toFixed(2)}%</div>
           <div className={"text-xs text-text2"}>{item.picks} games</div>
-          {/*<div className={"text-xs text-text2"}>{item.itemId}</div>*/}
+          <div className={"text-xs text-text2"}>{item.itemId}</div>
         </div>
         <div
           className={`text-xs ${getWinRateColorClassName(item.winRate)} font-[600] w-[40px]`}>{(item.winRate * 100).toFixed(2)}%

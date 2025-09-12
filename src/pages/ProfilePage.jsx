@@ -96,7 +96,7 @@ export default function ProfilePage() {
           </Link>
           <Link
             to={`/profile/${region.toLowerCase()}/${nameAndTag}/live-match`} replace={true}
-            className={`cursor-pointer px-2 pb-3 text-sm font-[500] ${subMenu === "live-match" ? "border-b-2 border-b-main" : "text-text2"}`}
+            className={`cursor-pointer truncate px-2 pb-3 text-sm font-[500] ${subMenu === "live-match" ? "border-b-2 border-b-main" : "text-text2"}`}
           >
             Live Match
           </Link>

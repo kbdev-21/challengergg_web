@@ -7,8 +7,15 @@ import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
 import {Send} from "lucide-react";
 import {getTimeSinceTimestamp} from "../common/stringUtils.js";
+import {Link, useParams} from "react-router-dom";
+import {CHALLENGERGG_WEBSOCKET_BASE_URL} from "../common/config.js";
 
 export default function ChatPage() {
+  const wsBaseUrl = CHALLENGERGG_WEBSOCKET_BASE_URL;
+
+  const {room} = useParams();
+  const regionRoom = room ? room : "vn";
+
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
   const [client, setClient] = useState(null);
@@ -16,14 +23,15 @@ export default function ChatPage() {
     senderId: null,
     senderName: null,
   });
+  const [isSendButtonCooldown, setIsSendButtonCooldown] = useState(false);
 
   const {
     data: roomMessages,
     isLoading,
     isError
   } = useQuery({
-    queryKey: ["roomMessages"],
-    queryFn: () => fetchMessagesByRoom("VN"),
+    queryKey: ["roomMessages", regionRoom],
+    queryFn: () => fetchMessagesByRoom(regionRoom),
 
   })
 
@@ -36,7 +44,7 @@ export default function ChatPage() {
   useEffect(() => {
     setUpSenderInfo();
 
-    const socket = new SockJS("http://localhost:666/ws");
+    const socket = new SockJS(wsBaseUrl);
     const stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
@@ -58,7 +66,11 @@ export default function ChatPage() {
     };
   }, []);
 
-  const randomNames1 = ["Yasuo", "Yone", "Darius", "Garen", "Zed", "Talon", "Lucian", "Thresh", "Blitzcrank", "Jax", "Lee Sin", "Viktor", "Malphite", "Ornn", "Draven"];
+  const randomNames1 = [
+    "Yasuo", "Yone", "Darius", "Garen", "Zed",
+    "Talon", "Lucian", "Thresh", "Blitzcrank", "Jax",
+    "Lee Sin", "Viktor", "Malphite", "Ornn", "Draven"
+  ];
   const randomNames2 = ["Iron", "Bronze", "Silver", "Gold", "Platinum", "Emerald", "Diamond"];
 
   function setUpSenderInfo() {
@@ -86,7 +98,7 @@ export default function ChatPage() {
   }
 
   function sendMessage() {
-    if(text === ""){
+    if(text === "" || text.length > 199 || isSendButtonCooldown){
       return;
     }
     if (client && client.connected) {
@@ -95,10 +107,14 @@ export default function ChatPage() {
         body: JSON.stringify({
           senderId: senderInfo.senderId,
           senderName: senderInfo.senderName,
-          content: text
+          content: text,
+          room: regionRoom.toUpperCase()
         }),
       });
     }
+    setText("");
+    setIsSendButtonCooldown(true);
+    setTimeout(() => setIsSendButtonCooldown(false), 10000);
   }
 
   if (isLoading) return <LoadingSpinner/>;
@@ -110,23 +126,23 @@ export default function ChatPage() {
       {/* Server selector */}
       <div className={"w-full md:w-[260px] h-fit md:h-full shrink-0 flex flex-col bg-bg2 border border-bg3 rounded-md"}>
         <div className={"p-4 text-text2 text-xs font-[500]"}>Servers</div>
-        <div className={"h-[100px] overflow-y-auto md:h-full"}>
-          <div className={"cursor-pointer w-full p-4 text-base font-[500] bg-bg4 text-text1"}>VN Server</div>
-          <div className={"cursor-pointer w-full p-4 text-base font-[400] bg-bg2 text-text2"}>KR Server</div>
-          <div className={"cursor-pointer w-full p-4 text-base font-[400] bg-bg2 text-text2"}>EUW Server</div>
-          <div className={"cursor-pointer w-full p-4 text-base font-[400] bg-bg2 text-text2"}>EUN Server</div>
-          <div className={"cursor-pointer w-full p-4 text-base font-[400] bg-bg2 text-text2"}>NA Server</div>
-          <div className={"cursor-pointer w-full p-4 text-base font-[400] bg-bg2 text-text2"}>BR Server</div>
+        <div className={"h-[100px] overflow-y-auto md:h-full flex flex-col"}>
+          <Link to={`/chat/vn`} replace={true} className={`cursor-pointer w-full p-4 text-sm ${regionRoom === "vn" ? "bg-bg4 text1 font-[500]" : "bg-bg2 text-text2 font[400]"}`}>VN Server</Link>
+          <Link to={`/chat/kr`} replace={true} className={`cursor-pointer w-full p-4 text-sm ${regionRoom === "kr" ? "bg-bg4 text1 font-[500]" : "bg-bg2 text-text2 font[400]"}`}>KR Server</Link>
+          <Link to={`/chat/euw`} replace={true} className={`cursor-pointer w-full p-4 text-sm ${regionRoom === "euw" ? "bg-bg4 text1 font-[500]" : "bg-bg2 text-text2 font[400]"}`}>EUW Server</Link>
+          <Link to={`/chat/eun`} replace={true} className={`cursor-pointer w-full p-4 text-sm ${regionRoom === "eun" ? "bg-bg4 text1 font-[500]" : "bg-bg2 text-text2 font[400]"}`}>EUN Server</Link>
+          <Link to={`/chat/na`} replace={true} className={`cursor-pointer w-full p-4 text-sm ${regionRoom === "na" ? "bg-bg4 text1 font-[500]" : "bg-bg2 text-text2 font[400]"}`}>NA Server</Link>
+          <Link to={`/chat/br`} replace={true} className={`cursor-pointer w-full p-4 text-sm ${regionRoom === "br" ? "bg-bg4 text1 font-[500]" : "bg-bg2 text-text2 font[400]"}`}>BR Server</Link>
         </div>
       </div>
 
       {/* Chat section */}
-      <ChatSection sendMessage={sendMessage} text={text} setText={setText} messages={messages} senderInfo={senderInfo} />
+      <ChatSection room={regionRoom} isCooldown={isSendButtonCooldown} sendMessage={sendMessage} text={text} setText={setText} messages={messages} senderInfo={senderInfo} />
     </div>
   );
 }
 
-function ChatSection({messages, senderInfo, text, setText, sendMessage}) {
+function ChatSection({messages, senderInfo, text, setText, sendMessage, room, isCooldown}) {
   const messagesEndRef = useRef(null);
   const scrollableRef = useRef(null);
 
@@ -138,7 +154,7 @@ function ChatSection({messages, senderInfo, text, setText, sendMessage}) {
 
   return (
     <div className="w-full h-full flex flex-col bg-bg2 rounded-md border border-bg3">
-      <div className="text-sm font-[500] py-4 px-4 border-b border-bg3 text-main">VN Chat Room</div>
+      <div className="text-sm font-[500] py-4 px-4 border-b border-bg3 text-main">{room.toUpperCase()} Chat Room</div>
       <div className="flex flex-col h-full overflow-y-auto gap-3 py-2 px-2" ref={scrollableRef}>
         {messages.map((message) => (
           <ChatBubble message={message} senderId={senderInfo.senderId} key={message.id}/>
@@ -150,7 +166,6 @@ function ChatSection({messages, senderInfo, text, setText, sendMessage}) {
           onSubmit={(e) => {
             e.preventDefault();
             sendMessage();
-            setText("");
           }}
           className="flex w-full h-12 bg-bg3 rounded-full px-4 items-center"
         >
@@ -158,9 +173,10 @@ function ChatSection({messages, senderInfo, text, setText, sendMessage}) {
             className="w-full focus:outline-none"
             value={text}
             onChange={(e) => setText(e.target.value)}
+            placeholder={"Example: Type your GameName#tag and rank"}
           />
-          <button type="submit" className="cursor-pointer">
-            <Send className="text-main"/>
+          <button type="submit" className={`${isCooldown ? "pointer-events-none" : "cursor-pointer"}`}>
+            <Send className={`${isCooldown ? "text-main/30 " : "text-main "}`}/>
           </button>
         </form>
       </div>

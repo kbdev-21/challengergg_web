@@ -10,6 +10,7 @@ import ErrorAlert from "../ErrorAlert.jsx";
 import {getChampionAvatarUrl} from "../../services/ddragonApi.js";
 import {useGlobal} from "../../contexts/GlobalContext.jsx";
 import {Link} from "react-router-dom";
+import {useState} from "react";
 
 export default function OverviewSection({ playerData }) {
   const puuid = playerData.puuid;
@@ -17,6 +18,8 @@ export default function OverviewSection({ playerData }) {
 
   const initMatches = 15;
   const additionFetchMatches = 10;
+
+  const [showMoreButtonClickedCount, setShowMoreButtonClickedCount] = useState(0);
 
   const {
     data: matchPages,
@@ -82,8 +85,11 @@ export default function OverviewSection({ playerData }) {
           className={
             "w-full h-12 bg-bg2 rounded-md border border-bg3 flex justify-center items-center text-text2 cursor-pointer"
           }
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage || !hasNextPage}
+          onClick={() => {
+            setShowMoreButtonClickedCount(showMoreButtonClickedCount + 1);
+            fetchNextPage();
+          }}
+          disabled={isFetchingNextPage || !hasNextPage || showMoreButtonClickedCount >= 1}
         >
           {isFetchingNextPage ? <LoadingSpinner marginTop={false}/> : hasNextPage ? "Show more matches" : "No more matches"}
         </button>

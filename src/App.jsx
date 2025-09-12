@@ -21,10 +21,9 @@ export default function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/profile/:region/:nameAndTag/:subMenu" element={<ProfilePage />} />
               <Route path="/champions" element={<ChampionsPage />} />
-              <Route path="/champions/:championName" element={<ChampionPage />} />
-              <Route path="/champions/:championName/:position" element={<ChampionPage />} />
+              <Route path="/champions/:championName/:position?" element={<ChampionPage />} />
               <Route path="/leaderboard" element={<LeaderboardPage />} />
-              <Route path="/chat" element={<ChatPage />} />
+              <Route path="/chat/:room?" element={<ChatPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </PageLayout>

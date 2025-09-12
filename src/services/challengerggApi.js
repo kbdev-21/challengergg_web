@@ -1,6 +1,7 @@
 import axios from "axios";
+import {CHALLENGERGG_API_BASE_URL} from "../common/config.js";
 
-const baseUrl = 'http://localhost:666';
+const baseUrl = CHALLENGERGG_API_BASE_URL;
 
 export async function fetchPlayerDataByGameNameAndTagLine(gameName, tagLine, region) {
   const url = `${baseUrl}/api/v1/players/${region}/by-riotid/${gameName}/${tagLine}`;

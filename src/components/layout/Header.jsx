@@ -13,7 +13,7 @@ export default function Header() {
   return (
     <div className={"fixed top-0 z-40 w-full bg-bg2 border-b border-b-bg3 shadow-md"}>
       {/* Header content for desktop */}
-      <div className={"hidden lg:flex w-full px-8 py-3 justify-between gap-8"}>
+      <div className={"hidden lg:flex w-full px-8 py-4 justify-between gap-8"}>
         {/* Left part */}
         <div className={"flex items-center gap-10 h-12 shrink-0"}>
           <NavLink to={"/"}>
@@ -34,7 +34,7 @@ export default function Header() {
       </div>
 
       {/* Header content for mobile */}
-      <div className={"flex flex-col lg:hidden w-full px-6 py-3 justify-between gap-4"}>
+      <div className={"flex flex-col lg:hidden w-full px-6 py-4 justify-between gap-4"}>
         {/* Top part */}
         <div className={"flex justify-between items-center h-12"}>
           <NavLink to={"/"}>
