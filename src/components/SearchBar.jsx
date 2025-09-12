@@ -54,7 +54,7 @@ export default function SearchBar({bgStyle = "bg-bg2"}) {
       gameName = searchText.split("#")[0] !== "" ? searchText.split("#")[0].trim() : "Hide on bush";
       tagLine = searchText.split("#")[1] !== "" ? searchText.split("#")[1].trim() : regionCodeMap[selectedRegion];
     }
-    navigate(`/profile/${selectedRegion.toLowerCase()}/${gameName}-${tagLine}`);
+    navigate(`/profile/${selectedRegion.toLowerCase()}/${gameName}-${tagLine}/overview`);
   }
 
   const searchBarRef = useRef();
