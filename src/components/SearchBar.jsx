@@ -96,7 +96,7 @@ export default function SearchBar({bgStyle = "bg-bg2"}) {
           </button>
         </form>
       </div>
-      <div className={`absolute ${isDropdownOpen ? "flex" : "hidden"} justify-center w-full px-4`}>
+      <div className={`absolute z-40 ${isDropdownOpen ? "flex" : "hidden"} justify-center w-full px-4`}>
         <div className={"mt-1 w-full rounded-sm bg-bg2 border border-bg3"}>
           {isLoading ? (<></>) : searchResult ? (
             <SearchResultDisplay searchResult={searchResult}/>
@@ -144,7 +144,7 @@ export default function SearchBar({bgStyle = "bg-bg2"}) {
           <ChevronDown className={`text-text2 ${isOpen && "rotate-180"}`} size={13} strokeWidth={4}/>
         </div>
         {isOpen && (
-          <div className={"absolute bg-bg2 border border-bg3 flex flex-col mt-1 -left-2"}>
+          <div className={"absolute z-40 bg-bg2 border border-bg3 flex flex-col mt-1 -left-2"}>
             {regionList.map((region, index) => (
               <div
                 onClick={() => {
