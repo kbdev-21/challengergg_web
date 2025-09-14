@@ -16,8 +16,8 @@ export default function OverviewSection({ playerData }) {
   const puuid = playerData.puuid;
   const region = playerData.region;
 
-  const initMatches = 12;
-  const additionFetchMatches = 8;
+  const initMatches = 10;
+  const additionFetchMatches = 10;
 
   const [showMoreButtonClickedCount, setShowMoreButtonClickedCount] = useState(0);
 
