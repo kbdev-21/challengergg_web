@@ -87,7 +87,7 @@ function BuildDisplay({statDtos}) {
               <div className={"font-[500] text-xl xs:text-2xl"}>{build.championDisplayName}</div>
               <div className={"font-[500] text-xs xs:text-sm text-text2"}>
                 {positionTextFormatMap[build.position]}, Global Elite tier,
-                Patch {getTwoPathPatch(currentPatch)}
+                Patch {build.version}
               </div>
             </div>
 
