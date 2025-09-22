@@ -13,7 +13,7 @@ export default function Footer(){
           href={"https://github.com/kbdev-21"}
           target={"_blank"}
           rel="noopener noreferrer"
-          className={"hover:underline"}
+          className={"hover:underline text-main"}
         >kbdev_21</a>
       </div>
 

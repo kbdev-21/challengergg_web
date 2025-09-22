@@ -8,7 +8,7 @@ import {getChampionAvatarUrl} from "../services/ddragonApi.js";
 import {useGlobal} from "../contexts/GlobalContext.jsx";
 import {getTextColorForChampionTier, getTwoPathPatch} from "../common/stringUtils.js";
 import LinkToChampion from "../components/link/LinkToChampion.jsx";
-import {BAD_WIN_RATE} from "../common/constants.js";
+import {BAD_WIN_RATE, COUNTER_WIN_RATE} from "../common/constants.js";
 import TextTooltip from "../components/TextTooltip.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
 
@@ -41,7 +41,7 @@ export default function ChampionsPage() {
       <div className={"px-2"}>
         <div className={"mb-1 font-[600] text-lg"}>LoL Champions Tier List</div>
         <div className={"mb-4 text-text2 font-[500]"}>
-          Analytics of Elite tier matches (Master, Grandmaster, Challenger) from VN, KR, EUs, NA and BR servers for patch {getTwoPathPatch(currentPatch)}.</div>
+          Analytics of Elite tier matches (Master, Grandmaster, Challenger) from VN, KR, EUs, NA and BR servers for patch {champStatDtos[0].version ?? getTwoPathPatch(currentPatch)}.</div>
       </div>
 
       {/* Filter section */}
@@ -239,8 +239,10 @@ function ChampsTable({champs}) {
             <td className={"h-14"}>
               <div className={"flex justify-center gap-1"}>
                 {champ.matchUps
+                  // .filter((m) => m.picks >= champ.picks * 0.01)
                   .filter((m) => m.picks >= 20)
-                  .filter((m) => m.winRate < BAD_WIN_RATE)
+                  .filter((m) => m.winRate < COUNTER_WIN_RATE)
+                  .sort((a, b) => a.winRate - b.winRate)
                   .slice(0, 3).map((matchUp, index) => {
                     return (
                       <div key={index} className="w-6 h-6 overflow-hidden rounded-full">

@@ -170,5 +170,7 @@ export const rankImgMap = {
     "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/unranked.png",
 };
 
-export const BAD_WIN_RATE = 0.47;
-export const GOOD_WIN_RATE = 0.53;
+export const BAD_WIN_RATE = 0.48;
+export const GOOD_WIN_RATE = 0.52;
+
+export const COUNTER_WIN_RATE = 0.45;
