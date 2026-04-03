@@ -193,7 +193,8 @@ export default function MatchCard({matchDto, puuid}) {
 }
 
 function MatchDetail({matchDto}) {
-  const {currentPatch} = useGlobal();
+  const {currentPatch, items} = useGlobal();
+  const itemMap = items ? Object.fromEntries(items.map(i => [i.id, i])) : {};
 
   let highestDmg = 0;
   matchDto.performances.forEach((performance) => {
@@ -332,6 +333,8 @@ function MatchDetail({matchDto}) {
                       alt="item"
                       src={getItemImageUrl(itemId, currentPatch)}
                       className="w-[22px] h-[22px] rounded-sm"
+                      data-tooltip-id={"item-tooltip"}
+                      data-tooltip-html={itemMap[itemId] ? `<div style="font-size:12px"><strong>${itemMap[itemId].name}</strong><br/><span style="opacity:0.7">${itemMap[itemId].shortDescription}</span><br/><span style="color:#c89b3c">${itemMap[itemId].gold}g</span></div>` : undefined}
                     />
                   ) : (
                     <div

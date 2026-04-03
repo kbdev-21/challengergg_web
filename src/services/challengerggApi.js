@@ -47,3 +47,15 @@ export async function fetchMessagesByRoom(room) {
   const response = await axios.get(url);
   return response.data;
 }
+
+export async function fetchItemsData() {
+  const url = `${baseUrl}/api/v1/game-data/items`;
+  const response = await axios.get(url);
+  return response.data;
+}
+
+export async function updateItemType(id, type) {
+  const url = `${baseUrl}/api/v1/game-data/items/${id}/type?type=${type}`;
+  const response = await axios.post(url);
+  return response.data;
+}

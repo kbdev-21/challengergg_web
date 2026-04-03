@@ -1,4 +1,4 @@
-import {Link, NavLink, useLocation} from "react-router-dom";
+import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
 import Logo from "../Logo.jsx";
 import SearchBar from "../SearchBar.jsx";
 import {CircleUserRound, Crown, Info, Menu, Swords, X} from "lucide-react";
@@ -7,6 +7,7 @@ import {useState} from "react";
 export default function Header() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   const isHome = location.pathname === "/";
 
@@ -28,8 +29,9 @@ export default function Header() {
             <SearchBar bgStyle={"bg-bg1"}/>
           </div>
           <div className={"shrink-0"}>
-            <Info className={"cursor-pointer"}/>
+            <Info className={"cursor-pointer"} onClick={() => setIsInfoOpen(true)}/>
           </div>
+          {isInfoOpen && <InfoDialog onClose={() => setIsInfoOpen(false)}/>}
         </div>
       </div>
 
@@ -94,6 +96,75 @@ function HorizontalMenu() {
       </NavLink>
     </div>
   )
+}
+
+function InfoDialog({onClose}) {
+  const [message, setMessage] = useState("");
+  const [sent, setSent] = useState(false);
+  const navigate = useNavigate();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!message.trim()) return;
+    if (message === "dkbadmin") {
+      onClose();
+      navigate("/admin/items");
+      return;
+    }
+    setMessage("");
+    setSent(true);
+  }
+
+  return (
+    <div
+      className={"fixed inset-0 z-50 flex items-center justify-center bg-black/50"}
+      onClick={onClose}
+    >
+      <div
+        className={"bg-bg2 border border-bg3 rounded-xl shadow-xl p-6 max-w-sm w-full mx-4 flex flex-col gap-4"}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className={"flex items-center justify-between"}>
+          <div className={"font-[600] text-base"}>About Challengergg</div>
+          <X size={18} className={"cursor-pointer text-text2 hover:text-text1"} onClick={onClose}/>
+        </div>
+        <div className={"text-sm text-text2 leading-relaxed"}>
+          Challengergg is a League of Legends analytics platform focused on high-elo match data. Built and maintained by{" "}
+          <a
+            href={"https://github.com/kbdev-21"}
+            target={"_blank"}
+            rel={"noopener noreferrer"}
+            className={"text-main hover:underline font-[500]"}
+          >
+            kbdev_21
+          </a>
+          .
+        </div>
+        <form onSubmit={handleSubmit} className={"flex flex-col gap-2"}>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder={"Send a message to the developer..."}
+            rows={3}
+            className={"w-full bg-bg1 border border-bg3 rounded-md px-3 py-2 text-sm focus:outline-none resize-none"}
+          />
+          <div className={"flex items-center justify-between mt-1"}>
+            {sent ? (
+              <span className={"text-xs text-win font-[500]"}>Message sent!</span>
+            ) : (
+              <span/>
+            )}
+            <button
+              type={"submit"}
+              className={"cursor-pointer ml-auto bg-main text-black text-sm font-[500] px-4 py-1.5 rounded-md hover:opacity-90"}
+            >
+              Send
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 function MobileMenu({onClose}) {

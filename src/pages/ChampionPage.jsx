@@ -17,6 +17,7 @@ import {BAD_WIN_RATE, GOOD_WIN_RATE, positionTextFormatMap} from "../common/cons
 import LinkToChampion from "../components/link/LinkToChampion.jsx";
 import FullRuneBoard from "../components/FullRuneBoard.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
+import NoDataAlert from "../components/NoDataAlert.jsx";
 
 export default function ChampionPage() {
   const { championName } = useParams();
@@ -32,7 +33,7 @@ export default function ChampionPage() {
 
   if(isLoading) return <LoadingSpinner/>;
   if(isError) return <ErrorAlert/>;
-  if(statDtos.length === 0) return <ErrorAlert/>;
+  if(statDtos.length === 0) return <NoDataAlert/>;
 
   return (
     <BuildDisplay statDtos={statDtos}/>
@@ -148,7 +149,8 @@ function BuildDisplay({statDtos}) {
 }
 
 function Body({build}) {
-  const {currentPatch} = useGlobal();
+  const {currentPatch, items} = useGlobal();
+  const itemMap = items ? Object.fromEntries(items.map(i => [i.id, i])) : {};
 
   const [runeIndexSelected, setRuneIndexSelected] = useState(0);
 
@@ -224,13 +226,19 @@ function Body({build}) {
   );
 
   function ItemWinAndPickRateRow({item}) {
+    const meta = itemMap[item.itemId];
     return (
       <div className={"w-full flex justify-between items-center p-2 pr-4 border-b border-bg3"}>
-        <img alt={"item-img"} src={getItemImageUrl(item.itemId, currentPatch)} className={"w-8 h-8 rounded-md"}/>
+        <img
+          alt={"item-img"}
+          src={getItemImageUrl(item.itemId, currentPatch)}
+          className={"w-8 h-8 rounded-md"}
+          data-tooltip-id={"item-tooltip"}
+          data-tooltip-html={meta ? `<div style="font-size:12px"><strong>${meta.name}</strong><br/><span style="opacity:0.7">${meta.shortDescription}</span><br/><span style="color:#c89b3c">${meta.gold}g</span></div>` : undefined}
+        />
         <div className={"flex flex-col items-center gap-0.5"}>
           <div className={"text-xs font-[600]"}>{(item.pickRate * 100).toFixed(2)}%</div>
           <div className={"text-xs text-text2"}>{item.picks} games</div>
-          {/*<div className={"text-xs text-text2"}>{item.itemId}</div>*/}
         </div>
         <div
           className={`text-xs ${getWinRateColorClassName(item.winRate)} font-[600] w-[40px]`}>{(item.winRate * 100).toFixed(2)}%
@@ -240,15 +248,21 @@ function Body({build}) {
   }
 
   function BootWinAndPickRateRow({item}) {
+    const meta = itemMap[item.itemId];
     return (
       <div className={"w-full flex justify-between items-center py-2 pl-0 pr-4 border-t border-bg3"}>
         <div className={"w-[70px] lg:w-fit"}>
-          <img alt={"item-img"} src={getItemImageUrl(item.itemId, currentPatch)} className={"w-8 h-8 rounded-md"}/>
+          <img
+            alt={"item-img"}
+            src={getItemImageUrl(item.itemId, currentPatch)}
+            className={"w-8 h-8 rounded-md"}
+            data-tooltip-id={"item-tooltip"}
+            data-tooltip-html={meta ? `<div style="font-size:12px"><strong>${meta.name}</strong><br/><span style="opacity:0.7">${meta.shortDescription}</span><br/><span style="color:#c89b3c">${meta.gold}g</span></div>` : undefined}
+          />
         </div>
         <div className={"flex flex-col items-center gap-0.5"}>
           <div className={"text-xs font-[600]"}>{(item.pickRate * 100).toFixed(2)}%</div>
           <div className={"text-xs text-text2"}>{item.picks} games</div>
-          {/*<div className={"text-xs text-text2"}>{item.itemId}</div>*/}
         </div>
         <div
           className={`text-xs ${getWinRateColorClassName(item.winRate)} font-[600] w-[40px]`}>{(item.winRate * 100).toFixed(2)}%

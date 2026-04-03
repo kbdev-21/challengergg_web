@@ -1,6 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import {fetchCurrentLeaguePatch} from "../services/ddragonApi.js";
 import {useQuery} from "@tanstack/react-query";
+import {fetchItemsData} from "../services/challengerggApi.js";
 
 // 1. Create context
 const GlobalContext = createContext(null);
@@ -12,8 +13,13 @@ export function GlobalProvider({ children }) {
     queryFn: () => fetchCurrentLeaguePatch()
   });
 
+  const {data: items} = useQuery({
+    queryKey: ['items'],
+    queryFn: () => fetchItemsData()
+  });
+
   return (
-    <GlobalContext.Provider value={{currentPatch}}>
+    <GlobalContext.Provider value={{currentPatch, items}}>
       {children}
     </GlobalContext.Provider>
   );

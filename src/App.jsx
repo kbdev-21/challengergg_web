@@ -8,6 +8,7 @@ import {GlobalProvider} from "./contexts/GlobalContext.jsx";
 import ChampionPage from "./pages/ChampionPage.jsx";
 import LeaderboardPage from "./pages/LeaderboardPage.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
+import ItemManagerPage from "./pages/ItemManagerPage.jsx";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ export default function App() {
               <Route path="/champions/:championName/:position?" element={<ChampionPage />} />
               <Route path="/leaderboard" element={<LeaderboardPage />} />
               <Route path="/chat/:room?" element={<ChatPage />} />
+              <Route path="/admin/items" element={<ItemManagerPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </PageLayout>

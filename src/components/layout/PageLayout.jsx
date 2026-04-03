@@ -23,6 +23,7 @@ export default function PageLayout({ children }) {
       </div>
       <Footer/>
       <Tooltip id="text-tooltip" className="max-w-72 text-center" opacity={1} delayShow={100} />
+      <Tooltip id="item-tooltip" opacity={1} delayShow={100} />
     </div>
   );
 }

@@ -11,6 +11,7 @@ import LinkToChampion from "../components/link/LinkToChampion.jsx";
 import {BAD_WIN_RATE, COUNTER_WIN_RATE} from "../common/constants.js";
 import TextTooltip from "../components/TextTooltip.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
+import NoDataAlert from "../components/NoDataAlert.jsx";
 
 export default function ChampionsPage() {
   const {currentPatch} = useGlobal();
@@ -29,6 +30,7 @@ export default function ChampionsPage() {
 
   if (isLoading) return <LoadingSpinner/>;
   if (isError) return <ErrorAlert/>;
+  if (champStatDtos.length === 0) return <NoDataAlert/>;
 
   const positionFilterList = ["TOP", "JGL", "MID", "ADC", "SPT", ""];
   const displayChamps = champStatDtos
