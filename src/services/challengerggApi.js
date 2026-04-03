@@ -59,3 +59,9 @@ export async function updateItemType(id, type) {
   const response = await axios.post(url);
   return response.data;
 }
+
+export async function updateChampStats() {
+  const url = `${baseUrl}/api/v1/analytics/champstats/update`;
+  const response = await axios.post(url);
+  return response.data;
+}

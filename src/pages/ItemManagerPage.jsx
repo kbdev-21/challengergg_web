@@ -1,9 +1,9 @@
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {fetchItemsData, updateItemType} from "../services/challengerggApi.js";
+import {fetchItemsData, updateItemType, updateChampStats} from "../services/challengerggApi.js";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
 import {useState} from "react";
-import {X} from "lucide-react";
+import {X, RefreshCw, Check, AlertCircle} from "lucide-react";
 
 const ITEM_TYPES = ["START", "BASE", "BOOT", "UTILITY", "LEGENDARY", "OTHER", "EMPTY"];
 
@@ -19,6 +19,19 @@ export default function ItemManagerPage() {
 
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [champStatsStatus, setChampStatsStatus] = useState("idle"); // idle | loading | success | error
+
+  async function handleUpdateChampStats() {
+    setChampStatsStatus("loading");
+    try {
+      await updateChampStats();
+      setChampStatsStatus("success");
+      setTimeout(() => setChampStatsStatus("idle"), 3000);
+    } catch {
+      setChampStatsStatus("error");
+      setTimeout(() => setChampStatsStatus("idle"), 3000);
+    }
+  }
 
   if (isLoading) return <LoadingSpinner/>;
   if (isError) return <ErrorAlert/>;
@@ -40,6 +53,21 @@ export default function ItemManagerPage() {
 
   return (
     <div className={"flex flex-col gap-6"}>
+      <div className={"flex items-center justify-between"}>
+        <div className={"font-[600] text-sm text-text2"}>Item Manager</div>
+        <button
+          onClick={handleUpdateChampStats}
+          disabled={champStatsStatus === "loading"}
+          className={"cursor-pointer flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md border border-bg3 text-text2 hover:text-text1 disabled:opacity-50"}
+        >
+          {champStatsStatus === "loading" && <RefreshCw size={13} className={"animate-spin"}/>}
+          {champStatsStatus === "success" && <Check size={13} className={"text-green-400"}/>}
+          {champStatsStatus === "error" && <AlertCircle size={13} className={"text-red-400"}/>}
+          {champStatsStatus === "idle" && <RefreshCw size={13}/>}
+          Update champ stats
+        </button>
+      </div>
+
       {selectedIds.size > 0 && (
         <div className={"flex items-center justify-between bg-bg2 border border-bg3 rounded-md px-4 py-2"}>
           <div className={"text-sm text-text2"}>{selectedIds.size} item{selectedIds.size > 1 ? "s" : ""} selected</div>
